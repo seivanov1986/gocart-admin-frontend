@@ -11,6 +11,7 @@ import { HomeOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import Password from 'antd/es/input/Password';
 import UserService from '../../services/user'
+import {useParams} from 'react-router-dom';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -35,6 +36,8 @@ const formItemLayout = {
   };
 
 const User = (props) => {
+    const params = useParams();
+
     const [isEdit, setIsEdit] = useState(false)
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -71,9 +74,20 @@ const User = (props) => {
     };
 
     useEffect(() => {
-        if (props.id) {
+        if (params.id) {
             setIsEdit(true)
-            
+            UserService.read({id: Number(params.id)})
+            .then(response => {
+                if (response.status === 200) {
+                    form.setFieldsValue(response.data.Row);
+                    setIsLoading(false)
+                } else {
+                    setIsError(true)
+                }
+            })
+            .catch(e => {
+                setIsError(true)
+            });
         } else {
             setIsLoading(false)
         }
@@ -91,10 +105,10 @@ const User = (props) => {
 
         setInQuery(true)
 
-        if (props.id) {
+        if (params.id) {
             UserService.update({
                 ...request,
-                id: props.id
+                id: Number(params.id)
             })
             .then(response => {
                 if (response.status === 200) {

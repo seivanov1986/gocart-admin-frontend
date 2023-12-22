@@ -96,7 +96,18 @@ const Users = () => {
                     type="primary" 
                     icon={<DeleteOutlined />} 
                     size='large' 
-                    onClick={(e) => {}}
+                    onClick={(e) => {
+                    UserService.delete({
+                        ids: selectedRows
+                    })
+                    .then(response => {
+                        if (response.status == 200) {
+                            update()
+                        }
+                    })
+                    .catch(e => {
+                    });
+                }}
                 />
             </Flex>
 

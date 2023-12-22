@@ -33,7 +33,6 @@ import './AppLayout.css'
 
 const { Header, Content } = Layout;
 const items = [
-    {a: FileDoneOutlined, b:'Группы', k: '/admin/groups'},
     {a: TeamOutlined, b:'Пользователи', k: '/admin/users'},
   ].map((icon, index) => ({
     key: icon.k,
@@ -45,7 +44,7 @@ const Logo = (collapsed) => {
     return (
         <Link to="/admin">
             <img 
-                src="https://tech-max.ru/admin/static/dist/img/AdminLTELogo.png" 
+                src="/admin/static/AdminLTELogo.png" 
                 style={{
                     float: 'left',
                     lineHeight: .8,
