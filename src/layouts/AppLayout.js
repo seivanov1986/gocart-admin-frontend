@@ -33,6 +33,10 @@ import './AppLayout.css'
 
 const { Header, Content } = Layout;
 const items = [
+    {a: TeamOutlined, b:'Страницы', k: '/admin/pages'},
+    {a: TeamOutlined, b:'Категории', k: '/admin/categories'},
+    {a: TeamOutlined, b:'Продукты', k: '/admin/products'},
+    {a: TeamOutlined, b:'Аттрибуты', k: '/admin/attributes'},
     {a: TeamOutlined, b:'Пользователи', k: '/admin/users'},
   ].map((icon, index) => ({
     key: icon.k,

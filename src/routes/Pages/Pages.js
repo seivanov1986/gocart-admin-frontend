@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import UserService from '../../services/user'
+import PageService from '../../services/page'
 import List from "../../library/list/list";
 
 const breadcumbItems = [
@@ -35,14 +35,14 @@ const columns = [
     },
 ];
 
-const Users = () => {
+const Pages = () => {
     return (
         <List 
-            service={UserService}
+            service={PageService}
             columns={columns} 
             breadcumbItems={breadcumbItems}
         />
     )
 }
 
-export default Users;   
+export default Pages;   
