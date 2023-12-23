@@ -12,26 +12,19 @@ const breadcumbItems = [
         type: 'separator',
     },
     {
-        href: '/admin/users',
-        title: 'Пользователи',
+        href: '/admin/products',
+        title: 'Продукты',
     }
 ];
 
 const columns = [
     {
-      title: 'Имя пользователя',
-      dataIndex: 'login',
+      title: 'Название продукта',
+      dataIndex: 'Name',
       render: (text, record) => {
-        let url = "/admin/user/" + record.id
+        let url = "/admin/product/" + record.Id
         return (<Link to={url ?? ""}>{text}</Link>)
       },
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      render: (text, record) => {
-        return text ?? '-'
-      }   
     },
 ];
 
@@ -41,6 +34,7 @@ const Products = () => {
             service={ProductService}
             columns={columns} 
             breadcumbItems={breadcumbItems}
+            createUrl="product"
         />
     )
 }

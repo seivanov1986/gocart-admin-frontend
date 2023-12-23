@@ -2,8 +2,10 @@ import { Breadcrumb, Button, Divider, Flex, Pagination, Skeleton, Table } from "
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
+import Column from "antd/es/table/Column";
 
 const List = (props) => {
+    const buttonExists = props.buttonExists ?? true
     const [isLoading, setIsLoading] = useState(true)
 
     const [total, setTotal] = useState(0)
@@ -68,30 +70,34 @@ const List = (props) => {
 
             <Divider />
 
-            <Flex gap="small" wrap="wrap">
-                <Link to="/admin/user">
-                    <Button type="primary" icon={<PlusCircleOutlined />} size='large' />
-                </Link>
-                <Button 
-                    type="primary" 
-                    icon={<DeleteOutlined />} 
-                    size='large' 
-                    onClick={(e) => {
-                        props.service.delete({
-                            ids: selectedRows
-                        })
-                        .then(response => {
-                            if (response.status == 200) {
-                                update()
-                            }
-                        })
-                        .catch(e => {
-                        });
-                    }}
-                />
-            </Flex>
+            {buttonExists &&
+            <>
+                <Flex gap="small" wrap="wrap">
+                    <Link to={"/admin/"+props.createUrl}>
+                        <Button type="primary" icon={<PlusCircleOutlined />} size='large' />
+                    </Link>
+                    <Button 
+                        type="primary" 
+                        icon={<DeleteOutlined />} 
+                        size='large' 
+                        onClick={(e) => {
+                            props.service.delete({
+                                ids: selectedRows
+                            })
+                            .then(response => {
+                                if (response.status == 200) {
+                                    update()
+                                }
+                            })
+                            .catch(e => {
+                            });
+                        }}
+                    />
+                </Flex>
 
-            <Divider />
+                <Divider />
+            </>
+            }
 
             <Table 
                 rowSelection={{
@@ -102,8 +108,16 @@ const List = (props) => {
                 style={{overflow: 'scroll'}}
                 bordered={true}
                 pagination={false}
-                columns={props.columns}
-            />
+                //columns={props.columns}
+            >
+                {props.columns.map((item, index) => (
+                    <Column
+                        title={item.title}
+                        dataIndex={item.dataIndex}
+                        render={item.render}
+                    />
+                ))}
+            </Table>
             <div
                 style={{
                     textAlign: 'right',

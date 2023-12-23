@@ -12,26 +12,23 @@ const breadcumbItems = [
         type: 'separator',
     },
     {
-        href: '/admin/users',
-        title: 'Пользователи',
-    }
+        href: '/admin/attributes',
+        title: 'Атрибуты',
+    },
 ];
 
 const columns = [
     {
-      title: 'Имя пользователя',
-      dataIndex: 'login',
+      title: 'Название аттрибута',
+      dataIndex: 'name',
       render: (text, record) => {
-        let url = "/admin/user/" + record.id
+        let url = "/admin/attribute/" + record.id
         return (<Link to={url ?? ""}>{text}</Link>)
       },
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      render: (text, record) => {
-        return text ?? '-'
-      }   
+      title: 'Сигнатура',
+      dataIndex: 'signature',
     },
 ];
 
@@ -41,6 +38,7 @@ const Attributes = () => {
             service={AttributeService}
             columns={columns} 
             breadcumbItems={breadcumbItems}
+            createUrl="attribute"
         />
     )
 }

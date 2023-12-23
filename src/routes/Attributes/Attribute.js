@@ -6,18 +6,13 @@ import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/ic
 const items = [
     {
         type: 'input',
-        title: 'Логин',
-        name: 'login'
+        title: 'Название аттрибута',
+        name: 'name'
     },
     {
         type: 'input',
-        title: 'Email',
-        name: 'email'
-    },
-    {
-        type: 'password',
-        title: 'Пароль',
-        name: 'password'
+        title: 'Сигнатура',
+        name: 'signature'
     }
 ]
 
@@ -30,12 +25,12 @@ const breadcrumb = [
         type: 'separator',
     },
     {
-        href: '/admin/users',
-        title: 'Пользователи',
+        href: '/admin/attributes',
+        title: 'Аттрибуты',
     }
 ]
 
-const User = () => {
+const Attribute = () => {
     return (
         <>
             <ItemForm 
@@ -46,4 +41,4 @@ const User = () => {
     )
 }
 
-export default User;  
+export default Attribute;  

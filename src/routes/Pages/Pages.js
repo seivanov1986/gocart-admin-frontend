@@ -12,26 +12,33 @@ const breadcumbItems = [
         type: 'separator',
     },
     {
-        href: '/admin/users',
-        title: 'Пользователи',
+        href: '/admin/pages',
+        title: 'Страницы',
     }
 ];
 
 const columns = [
     {
-      title: 'Имя пользователя',
-      dataIndex: 'login',
+      title: 'Название страницы',
+      dataIndex: 'name',
       render: (text, record) => {
-        let url = "/admin/user/" + record.id
+        let url = "/admin/page/" + record.id
         return (<Link to={url ?? ""}>{text}</Link>)
       },
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      render: (text, record) => {
-        return text ?? '-'
-      }   
+      title: 'Тип страницы',
+      dataIndex: 'type',
+      render: (type) => {
+        switch (type) {
+            case 0:
+                return ("Страница")
+            case 1:
+                return ("Статья")
+            case 2:
+                return ("Новость")
+        }
+      } 
     },
 ];
 
@@ -41,6 +48,7 @@ const Pages = () => {
             service={PageService}
             columns={columns} 
             breadcumbItems={breadcumbItems}
+            createUrl="page"
         />
     )
 }

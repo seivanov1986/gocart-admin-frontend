@@ -12,27 +12,20 @@ const breadcumbItems = [
         type: 'separator',
     },
     {
-        href: '/admin/users',
-        title: 'Пользователи',
+        href: '/admin/categories',
+        title: 'Категории',
     }
 ];
 
 const columns = [
     {
-      title: 'Имя пользователя',
-      dataIndex: 'login',
+      title: 'Название категории',
+      dataIndex: 'name',
       render: (text, record) => {
-        let url = "/admin/user/" + record.id
+        let url = "/admin/category/" + record.id
         return (<Link to={url ?? ""}>{text}</Link>)
       },
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      render: (text, record) => {
-        return text ?? '-'
-      }   
-    },
+    }
 ];
 
 const Categories = () => {
@@ -41,6 +34,7 @@ const Categories = () => {
             service={CategoryService}
             columns={columns} 
             breadcumbItems={breadcumbItems}
+            createUrl="category"
         />
     )
 }

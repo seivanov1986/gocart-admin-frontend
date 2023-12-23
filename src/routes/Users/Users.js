@@ -41,6 +41,7 @@ const Users = () => {
             service={UserService}
             columns={columns} 
             breadcumbItems={breadcumbItems}
+            createUrl="user"
         />
     )
 }
