@@ -1,10 +1,9 @@
 import { Button } from "antd"
 import ImageModal from "../../modals/Image"
+import { useState } from 'react';
 
 const ChooseImage = (props) => {
-    console.log(props)
-
-    let id_image = props.form.getFieldValue("id_image")
+    let id_image = props.id_image ?? false
 
     if (id_image) {
         let name_image = props.form.getFieldValue("name_image")
@@ -41,16 +40,19 @@ const ChooseImage = (props) => {
 }
 
 const ImageBox = (props) => {
+    const [imageOpen, setImageOpen] = useState(false)
+
     return (
         <>
             <ChooseImage 
-                setImageOpen={props.setImageOpen} 
+                setImageOpen={setImageOpen} 
+                {...props}
                 //form={form}
             />
             <ImageModal
-                imageOpen={props.imageOpen} 
-                setImageOpen={props.setImageOpen}
-                changeImage={props.changeIdImage}
+                imageOpen={imageOpen} 
+                setImageOpen={setImageOpen}
+                changeImage={null}
             />
         </>
     )

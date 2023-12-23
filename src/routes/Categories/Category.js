@@ -2,6 +2,7 @@ import { Button, Form, Input, Tooltip } from "antd";
 import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
+import CategoryService from '../../services/category'
 
 const items = [
     {
@@ -75,6 +76,7 @@ const Category = () => {
     return (
         <>
             <ItemForm 
+                service={CategoryService}
                 items={items} 
                 breadcrumb={breadcrumb}
             />

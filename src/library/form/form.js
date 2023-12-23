@@ -45,12 +45,7 @@ const InputRender = (item) => {
       <Form.Item
         label={item.title ?? ""}
         name={item.name ?? ""}
-        rules={[
-            {
-            required: true,
-            message: 'Название страницы не должно быть пустым',
-            },
-        ]}
+        rules={item.rules ?? []}
         >
         <Input 
             maxLength={100}
@@ -191,12 +186,7 @@ const PasswordRender = (item) => {
       <Form.Item
         label={item.title ?? ""}
         name={item.name ?? ""}
-        rules={[
-            {
-            required: true,
-            message: 'Please input your password!',
-            },
-        ]}
+        rules={item.rules ?? []}
         >
         <Password />
       </Form.Item>
@@ -213,7 +203,7 @@ const ImageRender = (item) => {
         valuePropName="fileList"
         //getValueFromEvent={normFile}
       >
-        
+        <ImageBox />
       </Form.Item>
     </>
   )
@@ -237,8 +227,40 @@ const elements = new Map(
 const ItemForm = (props) => {
   const [form] = Form.useForm();
 
-  const onFinish = () => {
+  const onFinish = (values) => {
+    let request = {}
 
+    for (const property in values) {
+        if (property) {
+            request[property] = values[property]
+        }
+    }
+
+    props.service.create(request)
+    .then(response => {
+        if (response.status === 200) {
+            notification.success({
+                message: 'success',
+                description: 'Страница успешно добавлена',
+            })
+        } else {
+            notification.error({
+                message: 'Terminal error',
+                description: response.error ?? 'unknown error',
+                duration: 10,
+            })
+        }
+    })
+    .catch(e => {
+        notification.error({
+            message: 'Template error',
+            duration: 10,
+            description: e.message,
+        })
+    })
+    .finally(e => {
+        //setInQuery(false)
+    });
   }
 
   let items = props.items ?? []
