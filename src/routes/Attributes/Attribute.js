@@ -3,6 +3,7 @@ import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import AttributeService from '../../services/attribute'
+import { useParams } from "react-router-dom";
 
 const items = [
     {
@@ -31,13 +32,17 @@ const breadcrumb = [
     }
 ]
 
-const Attribute = () => {
+const Attribute = (props) => {
+    const params = useParams()
+
     return (
         <>
             <ItemForm 
                 service={AttributeService}
                 items={items} 
                 breadcrumb={breadcrumb}
+                {...props}
+                params={params}
             />
         </>
     )

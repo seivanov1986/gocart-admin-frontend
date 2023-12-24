@@ -3,6 +3,7 @@ import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ProductService from '../../services/product'
+import { useParams } from "react-router-dom";
 
 const items = [
     {
@@ -36,7 +37,7 @@ const items = [
         name: 'content'
     },
     {
-        type: 'input',
+        type: 'digitinput',
         title: 'Сортировка',
         name: 'sort'
     },
@@ -79,13 +80,17 @@ const breadcrumb = [
     }
 ]
 
-const Product = () => {
+const Product = (props) => {
+    const params = useParams()
+
     return (
         <>
             <ItemForm 
                 service={ProductService}
                 items={items} 
                 breadcrumb={breadcrumb}
+                {...props}
+                params={params}
             />
         </>
     )

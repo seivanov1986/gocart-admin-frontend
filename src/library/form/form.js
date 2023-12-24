@@ -100,14 +100,13 @@ const CkeditorRender = (item) => {
             name={item.name ?? ""}
             label={item.title ?? ""}
             getValueFromEvent={(event, editor) => {
-                const data = editor.getData();
-                return data;
+              return editor.getData();
             }}
         >
         <CKEditor
             editor={ClassicEditor}
-            //data={form.getFieldValue("content")}
-            config={{       
+            data={item.form.getFieldValue(item.name ?? "") ?? ""}
+            config={{
                 toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'insertTable',
                     'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', '|', 'SourceEditing'],
                 htmlSupport: {
@@ -226,6 +225,26 @@ const elements = new Map(
 
 const ItemForm = (props) => {
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (props.params.id) {
+      props.service.read({id: Number(props.params.id)})
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response.data.Row)
+          form.setFieldsValue(response.data.Row);
+          setIsLoading(false)
+        }
+      })
+      .catch(e => {
+          
+      })
+      .finally(e => {
+          //setInQuery(false)
+      });
+    }
+  }, []);
 
   const onFinish = (values) => {
     let request = {}
@@ -236,31 +255,62 @@ const ItemForm = (props) => {
         }
     }
 
-    props.service.create(request)
-    .then(response => {
-        if (response.status === 200) {
-            notification.success({
-                message: 'success',
-                description: 'Страница успешно добавлена',
-            })
-        } else {
-            notification.error({
-                message: 'Terminal error',
-                description: response.error ?? 'unknown error',
-                duration: 10,
-            })
-        }
-    })
-    .catch(e => {
-        notification.error({
-            message: 'Template error',
-            duration: 10,
-            description: e.message,
-        })
-    })
-    .finally(e => {
-        //setInQuery(false)
-    });
+    if (props.params.id) {
+      props.service.update({
+        ...request,
+        id: Number(props.params.id)
+      })
+      .then(response => {
+          if (response.status === 200) {
+              notification.success({
+                  message: 'success',
+                  description: 'Страница успешно добавлена',
+              })
+          } else {
+              notification.error({
+                  message: 'Terminal error',
+                  description: response.error ?? 'unknown error',
+                  duration: 10,
+              })
+          }
+      })
+      .catch(e => {
+          notification.error({
+              message: 'Template error',
+              duration: 10,
+              description: e.message,
+          })
+      })
+      .finally(e => {
+          //setInQuery(false)
+      });
+    } else {
+      props.service.create(request)
+      .then(response => {
+          if (response.status === 200) {
+              notification.success({
+                  message: 'success',
+                  description: 'Страница успешно добавлена',
+              })
+          } else {
+              notification.error({
+                  message: 'Terminal error',
+                  description: response.error ?? 'unknown error',
+                  duration: 10,
+              })
+          }
+      })
+      .catch(e => {
+          notification.error({
+              message: 'Template error',
+              duration: 10,
+              description: e.message,
+          })
+      })
+      .finally(e => {
+          //setInQuery(false)
+      });
+    }
   }
 
   let items = props.items ?? []
@@ -285,7 +335,7 @@ const ItemForm = (props) => {
               }}
           >
             {items.map((item, index) => (
-              elements.get(item.type)(item)
+              elements.get(item.type)({...item, form})
             ))}
 
             <Divider />

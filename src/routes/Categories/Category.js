@@ -3,58 +3,71 @@ import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import CategoryService from '../../services/category'
+import { useParams } from "react-router-dom";
 
 const items = [
     {
         type: 'input',
-        title: 'Категория'
+        title: 'Категория',
+        name: 'name'
     },
     {
         type: 'checkbox',
-        title: 'Активная'
+        title: 'Активная',
+        name: 'active'
     },
     {
         type: 'input',
-        title: 'Шаблон'
+        title: 'Шаблон',
+        name: 'template'
     },
     {
         type: 'selectajax',
-        title: 'Родительская категория'
+        title: 'Родительская категория',
+        name: 'parent_id'
     },
     {
         type: 'image',
-        title: 'Изображение страницы'
+        title: 'Изображение страницы',
+        name: 'image_id'
     },
     {
         type: 'input',
-        title: 'Цена'
+        title: 'Цена',
+        name: 'price'
     },
     {
         type: 'ckeditor',
-        title: 'Описание'
+        title: 'Описание',
+        name: 'content'
+    },
+    {
+        type: 'digitinput',
+        title: 'Сортировка',
+        name: 'sort'
     },
     {
         type: 'input',
-        title: 'Сортировка'
-    },
-    {
-        type: 'input',
-        title: 'SEO URL'
+        title: 'SEO URL',
+        name: 'sefurl'
     },
     {
         type: 'divider'
     },
     {
         type: 'input',
-        title: 'Мета-тег Title'
+        title: 'Мета-тег Title',
+        name: 'title'
     },
     {
         type: 'textarea',
-        title: 'Мета-тег Description'
+        title: 'Мета-тег Description',
+        name: 'description'
     },
     {
         type: 'textarea',
-        title: 'Мета-тег Keywords'
+        title: 'Мета-тег Keywords',
+        name: 'keywords'
     }
 ]
 
@@ -72,13 +85,17 @@ const breadcrumb = [
     }
 ]
 
-const Category = () => {
+const Category = (props) => {
+    const params = useParams()
+
     return (
         <>
             <ItemForm 
                 service={CategoryService}
                 items={items} 
                 breadcrumb={breadcrumb}
+                {...props}
+                params={params}
             />
         </>
     )

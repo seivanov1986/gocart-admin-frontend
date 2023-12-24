@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Divider, Flex, Pagination, Skeleton, Table } from "antd";
+import { Breadcrumb, Button, Divider, Flex, Pagination, Popconfirm, Skeleton, Table } from "antd";
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -76,11 +76,10 @@ const List = (props) => {
                     <Link to={"/admin/"+props.createUrl}>
                         <Button type="primary" icon={<PlusCircleOutlined />} size='large' />
                     </Link>
-                    <Button 
-                        type="primary" 
-                        icon={<DeleteOutlined />} 
-                        size='large' 
-                        onClick={(e) => {
+                    <Popconfirm
+                        title="Delete the task"
+                        description="Are you sure to delete this task?"
+                        onConfirm={(e) => {
                             props.service.delete({
                                 ids: selectedRows
                             })
@@ -92,7 +91,16 @@ const List = (props) => {
                             .catch(e => {
                             });
                         }}
-                    />
+                        //onCancel={cancel}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button 
+                            type="primary" 
+                            icon={<DeleteOutlined />} 
+                            size='large'
+                        />
+                    </Popconfirm>
                 </Flex>
 
                 <Divider />
