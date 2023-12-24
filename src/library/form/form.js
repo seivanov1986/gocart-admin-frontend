@@ -1,5 +1,5 @@
 import { Select, Breadcrumb, Button, Divider, Flex, Form, Image, Input, InputNumber, 
-    Modal, Pagination, Skeleton, Tooltip, Upload, Row, Col, Checkbox } from 'antd';
+    Modal, Pagination, Skeleton, Tooltip, Upload, Row, Col, Checkbox, Dropdown, Space } from 'antd';
 import { Typography, notification } from 'antd';
 import { UploadOutlined, UpCircleOutlined, SyncOutlined, FolderAddOutlined, 
     DeleteOutlined, DragOutlined, PlusCircleOutlined, FolderOutlined } from '@ant-design/icons';
@@ -16,6 +16,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from 'ckeditor5-custom-build';
 import Parent from './selectajax'
 import ImageBox from './image'
+import { DownOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -317,15 +318,6 @@ const ItemForm = (props) => {
 
   return (
       <>
-          <div style={{paddingTop: '20px'}}>
-            <Breadcrumb
-                separator=""
-                items={props.breadcrumb ?? []}
-            />
-          </div>
-
-          <Divider />
-
           <Form
               {...formItemLayout}
               form={form}

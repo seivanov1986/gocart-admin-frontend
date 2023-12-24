@@ -1,4 +1,4 @@
-import { Button, Form, Input, Tooltip } from "antd";
+import { Breadcrumb, Button, Divider, Form, Input, Tooltip } from "antd";
 import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -42,6 +42,15 @@ const User = (props) => {
 
     return (
         <>
+            <div style={{paddingTop: '20px'}}>
+                <Breadcrumb
+                    separator=""
+                    items={breadcrumb}
+                />
+            </div>
+
+            <Divider />
+
             <ItemForm 
                 service={UserService}
                 items={items} 

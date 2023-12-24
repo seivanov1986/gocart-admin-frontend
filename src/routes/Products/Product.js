@@ -1,9 +1,11 @@
-import { Button, Form, Input, Tooltip } from "antd";
+import { Breadcrumb, Button, Divider, Form, Input, Tooltip } from "antd";
 import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ProductService from '../../services/product'
 import { useParams } from "react-router-dom";
+import Tabs from "../../library/form/tabs";
+import { useState } from 'react';
 
 const items = [
     {
@@ -80,17 +82,76 @@ const breadcrumb = [
     }
 ]
 
+const tabs = [
+    {
+      key: '0',
+      label: 'Основные',
+      tab: 'main',
+      widget: 'main'
+    },
+    {
+      key: '1',
+      label: 'Изображения',
+      tab: 'images',
+      widget: 'images'
+    },
+    {
+      key: '2',
+      label: 'Категории',
+      tab: 'categories',
+      widget: 'categories'
+    },
+    {
+      key: '3',
+      label: 'Атрибуты',
+      tab: 'attributes',
+      widget: 'attributes'
+    }
+];
+
+const Tab = (props) => {
+    if (props.tab == 'main') {
+        return (
+            <>
+                <ItemForm 
+                    service={ProductService}
+                    items={items} 
+                    {...props}
+                />
+            </>
+        )
+    }
+
+    return (<></>)
+}
+
 const Product = (props) => {
     const params = useParams()
+    const [tab, setTab] = useState('main')
 
     return (
         <>
-            <ItemForm 
-                service={ProductService}
-                items={items} 
-                breadcrumb={breadcrumb}
-                {...props}
+            <div style={{paddingTop: '20px'}}>
+                <Breadcrumb
+                    separator=""
+                    items={breadcrumb}
+                />
+            </div>
+
+            <Divider />
+
+            <Tabs 
                 params={params}
+                tabs={tabs}
+                onTabChange={(e) => {
+                    setTab(e)
+                }}
+            />
+
+            <Tab
+                {...props} 
+                params={params}
+                tab={tab} 
             />
         </>
     )

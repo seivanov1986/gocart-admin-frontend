@@ -1,9 +1,11 @@
-import { Button, Form, Input, Tooltip } from "antd";
+import { Breadcrumb, Button, Divider, Form, Input, Tooltip } from "antd";
 import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import CategoryService from '../../services/category'
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"
+import { useState } from 'react';
+import Tabs from "../../library/form/tabs";
 
 const items = [
     {
@@ -85,17 +87,62 @@ const breadcrumb = [
     }
 ]
 
+const tabs = [
+    {
+        key: '0',
+        label: 'Основные',
+        tab: 'main'
+    },
+    {
+        key: '1',
+        label: 'Изображения',
+        tab: 'images'
+    }
+]
+
+const Tab = (props) => {
+    if (props.tab == 'main') {
+        return (
+            <>
+                <ItemForm 
+                    service={CategoryService}
+                    items={items} 
+                    {...props}
+                />
+            </>
+        )
+    }
+
+    return (<></>)
+}
+
 const Category = (props) => {
     const params = useParams()
+    const [tab, setTab] = useState('main')
 
     return (
         <>
-            <ItemForm 
-                service={CategoryService}
-                items={items} 
-                breadcrumb={breadcrumb}
-                {...props}
+            <div style={{paddingTop: '20px'}}>
+                <Breadcrumb
+                    separator=""
+                    items={breadcrumb}
+                />
+            </div>
+
+            <Divider />
+
+            <Tabs 
                 params={params}
+                tabs={tabs}
+                onTabChange={(e) => {
+                    setTab(e)
+                }}
+            />
+
+            <Tab
+                {...props} 
+                params={params}
+                tab={tab} 
             />
         </>
     )
