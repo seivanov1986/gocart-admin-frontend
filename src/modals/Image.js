@@ -6,10 +6,11 @@ import { UploadOutlined, UpCircleOutlined, SyncOutlined, FolderAddOutlined,
     DeleteOutlined, DragOutlined, PlusCircleOutlined, FolderOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import Search from 'antd/es/input/Search';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
+import './image.css'
 
 const CustomImage = (props) => {
     let [ID, setID] = useState()
@@ -74,7 +75,6 @@ const CustomImage = (props) => {
         )
     }
 
-    console.log(props)
     let src="http://localhost:9012/dynamic/180x120" + props.item.Path
 
     return (
@@ -125,6 +125,27 @@ const ImageList = (props) => {
     )
 }
 
+const fileList1 = [
+    {
+      uid: '0',
+      name: 'xxx.png',
+      status: 'uploading',
+      percent: 33,
+    },
+    {
+      uid: '-1',
+      name: 'yyy.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+    {
+      uid: '-2',
+      name: 'zzz.png',
+      status: 'error',
+    },
+];
+
 const ImageModal = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [items, setItems] = useState([])
@@ -132,6 +153,9 @@ const ImageModal = (props) => {
     const [idParent, setIdParent] = useState(0)
     const [pathParent, setPathParent] = useState([])
     const [page, setPage] = useState(0)
+    const [fileList, setFileList] = useState([])
+
+    console.log(fileList)
 
     const changeFolder = (id) => {
         console.log(id)
@@ -171,6 +195,25 @@ const ImageModal = (props) => {
             });  
         }
     }, [idParent, page]);
+
+    const uploadFunc = (props) => {
+        let fileReaders = [];
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+            console.log(event)
+        }
+        fileReader.fileName = props.file.name
+        fileReader.readAsArrayBuffer(props.file)
+        fileReaders.push(fileReader)
+
+        setFileList((prevFileList) => [...prevFileList, {
+            //uid: Date.now() + Math.random(),
+            uid: props.file.uid,
+            name: props.file.name,
+            status: 'uploading',
+            percent: 33,
+        }])      
+    }
 
     return (
         <Modal
@@ -213,35 +256,7 @@ const ImageModal = (props) => {
                     onChange={(e) => {
                         //console.log(e)
                     }}
-                    customRequest={(e) => {
-
-                        console.log(">>>")
-                        let fileReaders = [];
-                        const fileReader = new FileReader();
-                        fileReader.onload = (event) => {
-                            console.log("2222")
-                            console.log(event)
-                            console.log(event.target.result)
-                            const uid = uuidv4();
-                            console.log(">>>>", event.target.fileName)
-
-                            ImageDataService.uploadImage(event.target.result, {
-                                filename: event.target.fileName,
-                                uuid: uid,
-                                idParent: idParent
-                            })
-                            .then(response => {
-                            })
-                            .catch((error) => {
-                            })
-                        }
-                        fileReader.fileName = e.file.name
-                        fileReader.readAsArrayBuffer(e.file)
-                        fileReaders.push(fileReader)
-
-                        console.log("55555")
-                        console.log(e)
-                    }}
+                    customRequest={uploadFunc}
                     {...props}
                 >
                     <Button type="primary" icon={<UploadOutlined />} size='large' />
@@ -314,6 +329,22 @@ const ImageModal = (props) => {
                     }}
                 />
             </Flex>
+
+            <Divider />
+
+            <Upload
+                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                listType="picture"
+                fileList={fileList}
+                className="upload-list-inline"
+                onRemove={(e) => {
+                    setFileList((prevFileList) => {
+                        return prevFileList.filter(function(item) {
+                            return item.uid !== e.uid
+                        })
+                    })
+                }}
+            />
 
             <Divider />
 
