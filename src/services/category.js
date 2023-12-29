@@ -20,6 +20,10 @@ class CategoryService {
     list(data) {
         return http().post("/admin/category/list", data)
     }
+
+    selectList(data) {
+        return http().post("/admin/category/select_list", data)
+    }
 }
 
 export default new CategoryService();

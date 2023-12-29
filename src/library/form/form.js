@@ -166,7 +166,7 @@ const SelectAjaxRender = (item) => {
             name={item.name ?? ""}
             label={item.title ?? ""}
         >
-        <Parent />
+        <Parent service={item.service ?? null} />
       </Form.Item>
     </>
   )
@@ -315,6 +315,7 @@ const ItemForm = (props) => {
   }
 
   let items = props.items ?? []
+  let hideButton = props.hideButton ?? false
 
   return (
       <>
@@ -330,6 +331,8 @@ const ItemForm = (props) => {
               elements.get(item.type)({...item, form})
             ))}
 
+          {!hideButton &&
+            <>
             <Divider />
 
             <Form.Item>
@@ -340,6 +343,8 @@ const ItemForm = (props) => {
                 Сохранить
                 </Button>
             </Form.Item>
+            </>
+          }
 
           </Form>
       </>

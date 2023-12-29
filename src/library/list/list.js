@@ -60,22 +60,32 @@ const List = (props) => {
 
     return (
         <>
+            {props.breadcumbItems.length > 0 &&
+                <>
+                <div style={{paddingTop: '20px'}}>
+                    <Breadcrumb
+                        separator=""
+                        items={props.breadcumbItems}
+                    />
+                </div>
 
-            <div style={{paddingTop: '20px'}}>
-                <Breadcrumb
-                    separator=""
-                    items={props.breadcumbItems}
-                />
-            </div>
-
-            <Divider />
+                <Divider />
+                </>
+            }
 
             {buttonExists &&
             <>
                 <Flex gap="small" wrap="wrap">
+                    {props.addFunc &&
+                        <Button 
+                            onClick={props.addFunc}
+                            type="primary" icon={<PlusCircleOutlined />} size='large' />
+                    }
+                    {!props.addFunc &&
                     <Link to={"/admin/"+props.createUrl}>
                         <Button type="primary" icon={<PlusCircleOutlined />} size='large' />
                     </Link>
+                    }
                     <Popconfirm
                         title="Delete the task"
                         description="Are you sure to delete this task?"

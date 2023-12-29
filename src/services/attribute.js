@@ -20,6 +20,10 @@ class AttributeService {
     list(data) {
         return http().post("/admin/attribute/list", data)
     }
+
+    selectList(data) {
+        return http().post("/admin/attribute/select_list", data)
+    }
 }
 
 export default new AttributeService();

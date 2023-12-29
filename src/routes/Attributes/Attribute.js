@@ -9,7 +9,8 @@ const items = [
     {
         type: 'input',
         title: 'Название аттрибута',
-        name: 'name'
+        name: 'name',
+        service: AttributeService,
     },
     {
         type: 'input',

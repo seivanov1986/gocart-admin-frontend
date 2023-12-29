@@ -6,6 +6,8 @@ import ProductService from '../../services/product'
 import { useParams } from "react-router-dom";
 import Tabs from "../../library/form/tabs";
 import { useState } from 'react';
+import CategoriesTab from "./tabs/categories";
+import AttributesTab from "./tabs/attributes";
 
 const items = [
     {
@@ -116,6 +118,26 @@ const Tab = (props) => {
                 <ItemForm 
                     service={ProductService}
                     items={items} 
+                    {...props}
+                />
+            </>
+        )
+    }
+
+    if (props.tab == 'categories') {
+        return (
+            <>
+                <CategoriesTab 
+                    {...props}
+                />
+            </>
+        )
+    }
+
+    if (props.tab == 'attributes') {
+        return (
+            <>
+                <AttributesTab 
                     {...props}
                 />
             </>

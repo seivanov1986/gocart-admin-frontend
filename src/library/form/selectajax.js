@@ -29,8 +29,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, ...props }) {
 
     return (
       <Select
-        //labelInValue
-        //filterOption={false}
+        filterOption={false}
         onSearch={debounceFetcher}
         notFoundContent={fetching ? <Spin size="small" /> : null}
         {...props}
@@ -41,20 +40,17 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, ...props }) {
                 return
             }
             //setLoading(true)
-            CategoryDataService.list({})
+            props.service.selectList({})
             .then(response => {
-                let data = [];
-                for (let i = 0; i < response.data.list.length; i++) {
-                    data.push({ value: response.data.list[i].Id, label: response.data.list[i].Name })
-                }
-
-                setOptions(data)
+              setOptions(response.data.List.map((category) => ({
+                label: category.name,
+                value: category.id
+              })))
             })
             .catch(e => {
                 
             })
             .finally(() => {
-                //setLoading(false)
             });
         }}
       />
@@ -62,15 +58,39 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, ...props }) {
 }
 
 async function fetchUserList(username) {
-    console.log('fetching user', username);
-    return fetch('https://randomuser.me/api/?results=5')
-      .then((response) => response.json())
-      .then((body) =>
-        body.results.map((user) => ({
-          label: `${user.name.first} ${user.name.last}`,
-          value: user.login.username,
-        })),
-      );
+  return CategoryDataService.selectList({
+    query: username
+  })
+  .then(response => {
+    return response.data.List.map((category) => ({
+      label: category.name,
+      value: category.id
+    }))
+  })
+  .catch(e => {
+      
+  })
+  .finally(() => {
+  });
+}
+
+function getFetch(service) {
+  return async function fetchUserList(username) {
+    return service.selectList({
+      query: username
+    })
+    .then(response => {
+      return response.data.List.map((category) => ({
+        label: category.name,
+        value: category.id
+      }))
+    })
+    .catch(e => {
+        
+    })
+    .finally(() => {
+    });
+  }
 }
 
 const Parent = (props) => {
@@ -79,17 +99,16 @@ const Parent = (props) => {
     const [searchText, setSearchText] = useState("")
     const [value, setValue] = useState([]);
 
-    console.log(items)
+    // service = props.service
 
     return (
         <>
             <DebounceSelect
-                //mode="multiple"
+                service={props.service ?? null}
                 showSearch
                 allowClear                
-                //value={value}
                 placeholder="Select users"
-                fetchOptions={fetchUserList}
+                fetchOptions={getFetch(props.service ?? null)}
                 onChange={(newValue) => {
                     setValue(newValue);
                 }}
