@@ -30,6 +30,7 @@ const List = (props) => {
     const update = () => {
         setIsLoading(true)
         props.service.list({
+            ...props.extra ?? null,
             page: page
         })
         .then(response => {
@@ -47,7 +48,7 @@ const List = (props) => {
 
     useEffect(() => {
         update()
-    }, [page]);
+    }, [page, props.reload ?? false]);
 
     if (isLoading) {
         return (

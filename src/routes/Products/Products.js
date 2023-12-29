@@ -20,7 +20,7 @@ const breadcumbItems = [
 const columns = [
     {
       title: 'Название продукта',
-      dataIndex: 'Name',
+      dataIndex: 'name',
       render: (text, record) => {
         let url = "/admin/product/" + record.Id
         return (<Link to={url ?? ""}>{text}</Link>)

@@ -34,6 +34,11 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, ...props }) {
         notFoundContent={fetching ? <Spin size="small" /> : null}
         {...props}
         options={options}
+        onChange={(e) => {
+          if (props.setValue) {
+            props.setValue(e)
+          }
+        }}
         onDropdownVisibleChange={(e) => {
             if (e === false) {
                 //setLoading(false)
@@ -115,6 +120,7 @@ const Parent = (props) => {
                 style={{
                     width: '100%',
                 }}
+                {...props}
             />
         </>
     )

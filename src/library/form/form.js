@@ -40,6 +40,20 @@ const formItemLayout = {
     },
 };
 
+const InputHidden = (item) => {
+  item.form.setFieldsValue({
+    [item.name]: item.value
+  })
+
+  return (
+    <>
+      <Form.Item hidden name={item.name ?? ""}>
+        <Input type="hidden" value={item.value ?? ""} />
+      </Form.Item>
+    </>
+  )
+}
+
 const InputRender = (item) => {
   return (
     <>
@@ -160,13 +174,19 @@ const DigitInputRender = (item) => {
 }
 
 const SelectAjaxRender = (item) => {
+  const setValue = (value) => {
+    item.form.setFieldsValue({
+      [item.name]: value
+    })
+  }
+
   return (
     <>
       <Form.Item
             name={item.name ?? ""}
             label={item.title ?? ""}
         >
-        <Parent service={item.service ?? null} />
+        <Parent setValue={setValue} service={item.service ?? null} />
       </Form.Item>
     </>
   )
@@ -221,6 +241,7 @@ const elements = new Map(
     ['divider', DividerRender],
     ['password', PasswordRender],
     ['image', ImageRender],
+    ['hidden', InputHidden],
   ]
 )
 
@@ -297,6 +318,9 @@ const ItemForm = (props) => {
                   message: 'success',
                   description: 'Страница успешно добавлена',
               })
+              if (props.setReload) {
+                props.setReload(Date.now())
+              }
           } else {
               notification.error({
                   message: 'Terminal error',
@@ -331,7 +355,8 @@ const ItemForm = (props) => {
                   maxWidth: 1200,
               }}
           >
-            {items.map((item, index) => (
+
+            {items.map((item, index) => ( 
               elements.get(item.type)({...item, form})
             ))}
 

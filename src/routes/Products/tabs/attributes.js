@@ -9,21 +9,25 @@ import ItemForm from "../../../library/form/form";
 
 const columns = [
     {
-      title: 'Название продукта',
+      title: 'Аттрибут',
       dataIndex: 'Name',
       render: (text, record) => {
         let url = "/admin/product/" + record.Id
         return (<Link to={url ?? ""}>{text}</Link>)
       },
     },
+    {
+      title: 'Значение',
+      dataIndex: 'Value'
+    },
 ];
 
 const items = [
   {
-      type: 'selectajax',
-      title: 'Аттрибут',
-      name: 'attribute',
-      service: AttributeService,
+    type: 'selectajax',
+    title: 'Аттрибут',
+    name: 'id_attribute',
+    service: AttributeService,
   },
   {
     type: 'input',
@@ -34,6 +38,13 @@ const items = [
 
 const AddModal = (props) => {
   const [form, setForm] = useState(null)
+
+  items.push({
+    type: 'hidden',
+    title: 'Продукт',
+    name: 'id_product',
+    value: Number(props.params.id ?? null),
+  })
 
   return (
       <Modal 
@@ -65,6 +76,7 @@ const AddModal = (props) => {
 
 const AttributesTab = (props) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [reload, setReload] = useState(0)
 
   const addFunc = () => {
       setIsOpen(true)
@@ -77,15 +89,19 @@ const AttributesTab = (props) => {
     return (
         <>
           <List 
+              extra={{id_product:Number(props.params.id ?? null)}}
               service={AttributeToProductService}
               columns={columns} 
               breadcumbItems={[]}
               createUrl="product"
               addFunc={addFunc}
+              reload={reload}
           />
           <AddModal 
             isOpen={isOpen}
             closeFunc={closeFunc}
+            {...props}
+            setReload={setReload}
           />
         </>
     )

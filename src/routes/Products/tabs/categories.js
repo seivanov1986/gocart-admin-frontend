@@ -10,7 +10,7 @@ import ItemForm from "../../../library/form/form";
 const columns = [
     {
       title: 'Название продукта',
-      dataIndex: 'Name',
+      dataIndex: 'name_category',
     },
 ];
 
@@ -18,22 +18,35 @@ const items = [
     {
         type: 'selectajax',
         title: 'Категория',
-        name: 'name',
+        name: 'id_category',
         service: CategoryService,
     },
     {
       type: 'checkbox',
       title: 'Главная категория',
-      name: 'main'
+      name: 'main_category'
     },
 ];
 
 const AddModal = (props) => {
+    const [form, setForm] = useState(null)
+
+    items.push({
+        type: 'hidden',
+        title: 'Продукт',
+        name: 'id_product',
+        value: Number(props.params.id ?? null),
+    })
+
     return (
         <Modal 
             title="Добавить аттрибут"
             open={props.isOpen}
             onCancel={() => {
+                props.closeFunc()
+            }}
+            onOk={(e) => {
+                form.submit()
                 props.closeFunc()
             }}
             style={{
@@ -47,6 +60,7 @@ const AddModal = (props) => {
                 {...props}
                 params={{}}
                 hideButton={true}
+                setForm={setForm}
             />
         </Modal>
     )
@@ -54,6 +68,7 @@ const AddModal = (props) => {
 
 const CategoriesTab = (props) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [reload, setReload] = useState(0)
 
     const addFunc = () => {
         setIsOpen(true)
@@ -66,15 +81,19 @@ const CategoriesTab = (props) => {
     return (
         <>
             <List 
+                extra={{id_product:Number(props.params.id ?? null)}}
                 service={ProductToCategoryService}
                 columns={columns} 
                 breadcumbItems={[]}
                 createUrl="product"
                 addFunc={addFunc}
+                reload={reload}
             />
             <AddModal 
                 isOpen={isOpen} 
+                {...props}
                 closeFunc={closeFunc}
+                setReload={setReload}
             />
         </>
     )
