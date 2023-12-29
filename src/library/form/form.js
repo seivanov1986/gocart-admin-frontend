@@ -228,6 +228,10 @@ const ItemForm = (props) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(true);
 
+  if (props.setForm) {
+    props.setForm(form)
+  }
+
   useEffect(() => {
     if (props.params.id) {
       props.service.read({id: Number(props.params.id)})

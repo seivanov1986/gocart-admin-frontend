@@ -2,6 +2,7 @@ import List from "../../../library/list/list";
 import { Link } from "react-router-dom";
 import ProductService from '../../../services/product'
 import CategoryService from '../../../services/category'
+import ProductToCategoryService from '../../../services/productToCategory'
 import { Modal } from "antd";
 import { useState } from 'react';
 import ItemForm from "../../../library/form/form";
@@ -41,7 +42,7 @@ const AddModal = (props) => {
             }}
         >
             <ItemForm 
-                service={ProductService}
+                service={ProductToCategoryService}
                 items={items} 
                 {...props}
                 params={{}}
@@ -65,7 +66,7 @@ const CategoriesTab = (props) => {
     return (
         <>
             <List 
-                service={ProductService}
+                service={ProductToCategoryService}
                 columns={columns} 
                 breadcumbItems={[]}
                 createUrl="product"

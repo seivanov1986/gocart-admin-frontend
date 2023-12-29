@@ -2,6 +2,7 @@ import List from "../../../library/list/list";
 import { Link } from "react-router-dom";
 import ProductService from '../../../services/product'
 import AttributeService from '../../../services/attribute'
+import AttributeToProductService from '../../../services/attributeToProduct'
 import { Modal } from "antd";
 import { useState } from 'react';
 import ItemForm from "../../../library/form/form";
@@ -32,6 +33,8 @@ const items = [
 ];
 
 const AddModal = (props) => {
+  const [form, setForm] = useState(null)
+
   return (
       <Modal 
           title="Добавить аттрибут"
@@ -39,17 +42,22 @@ const AddModal = (props) => {
           onCancel={() => {
             props.closeFunc()
           }}
+          onOk={(e) => {
+            form.submit()
+            props.closeFunc()
+          }}
           style={{
             top: 20,
             minWidth: 800,
           }}
       >
-        <ItemForm 
-          service={ProductService}
-          items={items} 
+        <ItemForm
+          service={AttributeToProductService}
+          items={items}
           {...props}
           params={{}}
           hideButton={true}
+          setForm={setForm}
         />
       </Modal>
   )
@@ -69,7 +77,7 @@ const AttributesTab = (props) => {
     return (
         <>
           <List 
-              service={ProductService}
+              service={AttributeToProductService}
               columns={columns} 
               breadcumbItems={[]}
               createUrl="product"
