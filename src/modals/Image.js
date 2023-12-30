@@ -1,4 +1,5 @@
 import ImageDataService from '../services/image';
+import UploadFile from '../services/upload';
 import { Select, Breadcrumb, Button, Divider, Flex, Form, Image, Input, InputNumber, 
     Modal, Pagination, Skeleton, Tooltip, Upload, Row, Col, Popconfirm } from 'antd';
 import { Typography, notification } from 'antd';
@@ -11,6 +12,8 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import './image.css'
+import { HOST } from '../const'
+import { getToken } from '../authorization/auth'
 
 const CustomImage = (props) => {
     let [ID, setID] = useState()
@@ -223,25 +226,6 @@ const ImageModal = (props) => {
         }
     }, [idParent, page]);
 
-    const uploadFunc = (props) => {
-        let fileReaders = [];
-        const fileReader = new FileReader();
-        fileReader.onload = (event) => {
-            console.log(event)
-        }
-        fileReader.fileName = props.file.name
-        fileReader.readAsArrayBuffer(props.file)
-        fileReaders.push(fileReader)
-
-        setFileList((prevFileList) => [...prevFileList, {
-            //uid: Date.now() + Math.random(),
-            uid: props.file.uid,
-            name: props.file.name,
-            status: 'uploading',
-            percent: 33,
-        }])      
-    }
-
     return (
         <Modal
             title="Менеджер изображений"
@@ -283,7 +267,9 @@ const ImageModal = (props) => {
                     onChange={(e) => {
                         //console.log(e)
                     }}
-                    customRequest={uploadFunc}
+                    customRequest={(e) => {
+                        UploadFile(e, setFileList)
+                    }}
                     {...props}
                 >
                     <Button type="primary" icon={<UploadOutlined />} size='large' />
