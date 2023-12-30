@@ -6,6 +6,7 @@ import CategoryService from '../../services/category'
 import { useParams } from "react-router-dom"
 import { useState } from 'react';
 import Tabs from "../../library/form/tabs";
+import ImageList from "../../library/list/imagelist";
 
 const items = [
     {
@@ -110,6 +111,14 @@ const Tab = (props) => {
                     items={items} 
                     {...props}
                 />
+            </>
+        )
+    }
+
+    if (props.tab == 'images') {
+        return (
+            <>
+                <ImageList />
             </>
         )
     }

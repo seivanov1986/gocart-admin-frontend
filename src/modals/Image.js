@@ -1,6 +1,6 @@
 import ImageDataService from '../services/image';
 import { Select, Breadcrumb, Button, Divider, Flex, Form, Image, Input, InputNumber, 
-    Modal, Pagination, Skeleton, Tooltip, Upload, Row, Col } from 'antd';
+    Modal, Pagination, Skeleton, Tooltip, Upload, Row, Col, Popconfirm } from 'antd';
 import { Typography, notification } from 'antd';
 import { UploadOutlined, UpCircleOutlined, SyncOutlined, FolderAddOutlined, 
     DeleteOutlined, DragOutlined, PlusCircleOutlined, FolderOutlined } from '@ant-design/icons';
@@ -146,6 +146,33 @@ const fileList1 = [
     },
 ];
 
+const CreateFolder = () => {
+    const [name, setName] = useState()
+
+    return (
+        <>
+            <Popconfirm
+                title="Имя новой директории"
+                description={
+                    <Input onChange={(e) => {
+                        setName(e.target.value)
+                    }} />
+                }
+                onConfirm={(e) => {
+                    console.log("test")
+                    console.log(name)
+                }}
+                okText="Yes"
+                cancelText="No"
+            >
+            <Button
+                type="primary" icon={<FolderAddOutlined />} size='large' 
+            />
+            </Popconfirm>
+        </>
+    )
+}
+
 const ImageModal = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [items, setItems] = useState([])
@@ -261,59 +288,9 @@ const ImageModal = (props) => {
                 >
                     <Button type="primary" icon={<UploadOutlined />} size='large' />
                 </Upload>
-                <Tooltip 
-                    style={{
-                        background: 'white'
-                    }}
-                    title={
-                    <>
 
-                    <Row>
-                    <Col className="gutter-row" span={32}>
-                        <div
-                            style={{
-                                background: '#f7f7f7',
-                                color: 'black'
-                            }}
-                        >Новая Директория</div>
-                    </Col>
-                    </Row>
-                    <Row gutter={16}>
-                    <Col className="gutter-row" span={32}>
-                        
-                        <Flex gap="small" wrap="wrap">
-                        <Input
-                        style={{
-                            marginLeft: 'auto',
-                            width: 'inherit',
-                            flexShrink: 0,
-                            flexGrow: 1,
-                        }}
-                        ></Input>
-                        <Button 
-                            type="primary" 
-                            size='large' 
-                            icon={<PlusCircleOutlined />}
-                            onClick={() => {
-                                ImageDataService.createFolder({
-                                    parent_id: idParent,
-                                    name: "abc"
-                                })
-                                .then(response => {
-                                })
-                                .catch(e => {
-                                }); 
-                            }}
-                        />
-                        </Flex>
+                <CreateFolder />
 
-                    </Col>
-                    </Row>
-
-                    </>
-                } trigger="click" defaultOpen={false} placement="bottom">
-                    <Button type="primary" icon={<FolderAddOutlined />} size='large' />
-                </Tooltip>
                 <Button type="primary" icon={<DeleteOutlined />} size='large' />
                 <Button type="primary" icon={<DragOutlined />} size='large' />
                 <Search

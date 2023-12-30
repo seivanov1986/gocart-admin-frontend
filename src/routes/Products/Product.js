@@ -8,6 +8,7 @@ import Tabs from "../../library/form/tabs";
 import { useState } from 'react';
 import CategoriesTab from "./tabs/categories";
 import AttributesTab from "./tabs/attributes";
+import ImageList from "../../library/list/imagelist";
 
 const items = [
     {
@@ -140,6 +141,14 @@ const Tab = (props) => {
                 <AttributesTab 
                     {...props}
                 />
+            </>
+        )
+    }
+
+    if (props.tab == 'images') {
+        return (
+            <>
+                <ImageList />
             </>
         )
     }
