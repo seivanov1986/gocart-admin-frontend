@@ -98,6 +98,7 @@ class FileManager {
     limit = 1024 * 1024
     total = 0
     uid = null
+    name = ""
 
     GetState() {
         return {
@@ -105,6 +106,7 @@ class FileManager {
             limit: this.limit,
             total: this.total,
             uid: this.uid,
+            name: this.name,
         }
     }
 
@@ -212,6 +214,7 @@ class FileManager {
         fileReader.onload = this.OnLoad;        
         fileReader.onerror = this.OnLoadError;
         fileReader.fileName = file.name;
+        this.name = file.name
         fileReader.readAsArrayBuffer(
             file.slice(this.offset, this.limit + this.offset)
         )
@@ -254,6 +257,7 @@ class FileManager {
                 'X-Total': state.total,
                 'X-Offset': state.offset,
                 'X-Uid': state.uid,
+                'X-Name': btoa(state.name)
             },
             body: event.target.result
         }).then((response) => {
