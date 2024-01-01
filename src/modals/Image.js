@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import './image.css'
 import { HOST } from '../const'
 import { getToken } from '../authorization/auth'
+import FileListManager from '../library/file_list'
 
 const CustomImage = (props) => {
     let [ID, setID] = useState()
@@ -185,6 +186,8 @@ const ImageModal = (props) => {
     const [page, setPage] = useState(0)
     const [fileList, setFileList] = useState([])
 
+    FileListManager.set(fileList, setFileList)
+
     console.log(fileList)
 
     const changeFolder = (id) => {
@@ -301,6 +304,8 @@ const ImageModal = (props) => {
                 fileList={fileList}
                 className="upload-list-inline"
                 onRemove={(e) => {
+                    FileListManager.delete(e.uid)
+
                     setFileList((prevFileList) => {
                         return prevFileList.filter(function(item) {
                             return item.uid !== e.uid
