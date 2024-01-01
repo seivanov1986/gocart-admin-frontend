@@ -99,6 +99,15 @@ class FileManager {
     total = 0
     uid = null
 
+    GetState() {
+        return {
+            offset: this.offset,
+            limit: this.limit,
+            total: this.total,
+            uid: this.uid,
+        }
+    }
+
     AddFile(file) {
         this.files.push(file)
         if (this.progress == false) {
@@ -233,6 +242,8 @@ class FileManager {
     }
 
     OnLoad(event) {
+        let state = fileManager.GetState()
+
         let beforeTime = new Date().getTime();
         fetch("http://localhost:8000/admin/upload", {
             method: "post",
@@ -240,6 +251,9 @@ class FileManager {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': getToken(),
+                'X-Total': state.total,
+                'X-Offset': state.offset,
+                'X-Uid': state.uid,
             },
             body: event.target.result
         }).then((response) => {
