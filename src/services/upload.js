@@ -248,7 +248,7 @@ class FileManager {
         let state = fileManager.GetState()
 
         let beforeTime = new Date().getTime();
-        fetch("http://localhost:8000/admin/upload", {
+        fetch("http://localhost:8000/admin/image/upload", {
             method: "post",
             headers: {
                 'Accept': 'application/json',

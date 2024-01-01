@@ -206,8 +206,12 @@ const ImageModal = (props) => {
                 page: page
             })
             .then(response => {
-                setItems(response.data.list)
-                setTotal(response.data.total)
+                for (let i = 0; i < response.data.List.length; i++) {
+                    response.data.List[i].key = response.data.List[i].id
+                }
+
+                setItems(response.data.List)
+                setTotal(response.data.Total)
             })
             .catch(e => {
             });            
@@ -221,8 +225,12 @@ const ImageModal = (props) => {
                 page: page
             })
             .then(response => {
-                setItems(response.data.list)
-                setTotal(response.data.total)
+                for (let i = 0; i < response.data.List.length; i++) {
+                    response.data.List[i].key = response.data.List[i].id
+                }
+
+                setItems(response.data.List)
+                setTotal(response.data.Total)
             })
             .catch(e => {
             });  
