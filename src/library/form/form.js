@@ -215,6 +215,10 @@ const PasswordRender = (item) => {
 }
 
 const ImageRender = (item) => {
+  const changeImage = (e) => {
+    console.log(e)
+  }
+
   return (
     <>
       <Form.Item
@@ -223,7 +227,7 @@ const ImageRender = (item) => {
         valuePropName="fileList"
         //getValueFromEvent={normFile}
       >
-        <ImageBox />
+        <ImageBox changeImage={changeImage} />
       </Form.Item>
     </>
   )

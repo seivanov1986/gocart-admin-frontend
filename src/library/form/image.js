@@ -52,7 +52,7 @@ const ImageBox = (props) => {
             <ImageModal
                 imageOpen={imageOpen} 
                 setImageOpen={setImageOpen}
-                changeImage={null}
+                changeImage={props.changeImage}
             />
         </>
     )
