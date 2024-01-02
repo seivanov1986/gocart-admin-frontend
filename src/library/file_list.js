@@ -5,6 +5,14 @@ export default class FileListManager {
         this.list = list
         this.func = func
     }
+
+    static setUpdateFunc(func) {
+        this.update = func
+    }
+
+    static getUpdateFunc() {
+        return this.update
+    }
   
     static getFunc() {
         return this.func

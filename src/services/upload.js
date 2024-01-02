@@ -99,6 +99,7 @@ class FileManager {
     total = 0
     uid = null
     name = ""
+    parent_id = 0
 
     GetState() {
         return {
@@ -107,6 +108,7 @@ class FileManager {
             total: this.total,
             uid: this.uid,
             name: this.name,
+            parent_id: this.parent_id,
         }
     }
 
@@ -128,6 +130,7 @@ class FileManager {
 
         this.uid = file.uid
         this.total = file.size;
+        this.parent_id = file.idParent;
         this.ReadNextChunk(true)
     }
 
@@ -180,9 +183,14 @@ class FileManager {
             return list
         })
 
+        let update = FileListManager.getUpdateFunc()
+        update()
+
         this.progress = false
         this.offset = 0
         this.uid = null
+        this.idParent = 0
+        this.total = 0
         this.files.shift()
         this.Upload()
     }
@@ -244,6 +252,10 @@ class FileManager {
         this.Upload()
     }
 
+    SetUpdate() {
+
+    }
+
     OnLoad(event) {
         let state = fileManager.GetState()
 
@@ -257,7 +269,8 @@ class FileManager {
                 'X-Total': state.total,
                 'X-Offset': state.offset,
                 'X-Uid': state.uid,
-                'X-Name': btoa(state.name)
+                'X-Name': btoa(state.name),
+                'X-Parent-ID': state.parent_id
             },
             body: event.target.result
         }).then((response) => {
@@ -280,7 +293,7 @@ class FileManager {
 
 const fileManager = new(FileManager)
 
-const UploadFile = (props, setFileList) => {
+const UploadFile = (props, setFileList, idParent) => {
     // TODO filter extension (jpeg / jpg)
 
     if (props.file.size > 1024 * 1024 * 100) {
@@ -293,6 +306,10 @@ const UploadFile = (props, setFileList) => {
         return
     }
 
+    console.log(">>>>>")
+    console.log(props)
+
+    props.file.idParent = idParent
     fileManager.AddFile(props.file)
 
     setFileList((prevFileList) => [...prevFileList, {

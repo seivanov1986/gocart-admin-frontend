@@ -20,6 +20,10 @@ class ImageService {
     list(data) {
         return http().post("/admin/image/list", data)
     }
+
+    createFolder(data) {
+        return http().post("/admin/image/create_folder", data);
+    }
 }
 
 export default new ImageService();
