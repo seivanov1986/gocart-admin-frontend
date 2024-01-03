@@ -24,7 +24,7 @@ const items = [
     {
         type: 'image',
         title: 'Изображение страницы',
-        name: 'image_id'
+        name: 'id_image'
     },
     {
         type: 'textarea',

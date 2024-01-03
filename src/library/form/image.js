@@ -1,16 +1,19 @@
 import { Button } from "antd"
 import ImageModal from "../../modals/Image"
 import { useState } from 'react';
+import { HOST } from '../../const'
 
 const ChooseImage = (props) => {
-    let id_image = props.id_image ?? false
+    console.log(props)
+
+    let id_image = props.form.getFieldValue("id_image")
 
     if (id_image) {
         let name_image = props.form.getFieldValue("name_image")
         let path_image = props.form.getFieldValue("path_image")
 
         console.log(name_image, path_image)
-        let src = "http://localhost:9012/dynamic/180x180/" + path_image
+        let src = HOST + "/dynamic/180x180/" + path_image
 
         return (
             <div 
@@ -41,18 +44,22 @@ const ChooseImage = (props) => {
 
 const ImageBox = (props) => {
     const [imageOpen, setImageOpen] = useState(false)
+    const changeImage = (idImage, pathImage) => {
+        setImageOpen(false)
+        props.changeImage(idImage, pathImage)
+    }
 
     return (
         <>
             <ChooseImage 
                 setImageOpen={setImageOpen} 
                 {...props}
-                //form={form}
+                form={props.form}
             />
             <ImageModal
                 imageOpen={imageOpen} 
                 setImageOpen={setImageOpen}
-                changeImage={props.changeImage}
+                changeImage={changeImage}
             />
         </>
     )

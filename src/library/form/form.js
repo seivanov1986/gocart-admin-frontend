@@ -215,19 +215,33 @@ const PasswordRender = (item) => {
 }
 
 const ImageRender = (item) => {
-  const changeImage = (e) => {
-    console.log(e)
+  console.log(item)
+
+  const changeImage = (idImage, pathImage) => {
+    console.log(item)
+    item.form.setFieldValue("id_image", idImage)
+    item.form.setFieldValue("path_image", pathImage)
+    console.log(">>>>>>2222", idImage, pathImage)
   }
+
+  const normFile = (e) => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
 
   return (
     <>
       <Form.Item
         name={item.name ?? ""}
         label={item.title ?? ""}
-        valuePropName="fileList"
-        //getValueFromEvent={normFile}
       >
-        <ImageBox changeImage={changeImage} />
+        <ImageBox 
+          changeImage={changeImage} 
+          form={item.form}
+        />
       </Form.Item>
     </>
   )
@@ -277,6 +291,8 @@ const ItemForm = (props) => {
   }, []);
 
   const onFinish = (values) => {
+    console.log(values)
+
     let request = {}
 
     for (const property in values) {

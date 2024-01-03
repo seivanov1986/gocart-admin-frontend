@@ -47,7 +47,7 @@ const CustomImage = (props) => {
                     }}
                     onClick={() => { 
                         if (ftype === 0) {
-                            props.changeImage(ID, path) 
+                            props.changeImage(ID, path+name) 
                         } else {
                             props.changeFolder(ID)
                         }
@@ -99,7 +99,8 @@ const CustomImage = (props) => {
                 }}
                 onClick={() => { 
                     if (ftype === 0) {
-                        props.changeImage(ID, path) 
+                        props.changeImage(ID, path+name)
+                        
                     } else {
                         props.changeFolder(ID)
                     }

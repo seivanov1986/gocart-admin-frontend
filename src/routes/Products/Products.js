@@ -22,7 +22,7 @@ const columns = [
       title: 'Название продукта',
       dataIndex: 'name',
       render: (text, record) => {
-        let url = "/admin/product/" + record.Id
+        let url = "/admin/product/" + record.id
         return (<Link to={url ?? ""}>{text}</Link>)
       },
     },
