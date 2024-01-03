@@ -25,6 +25,25 @@ const columns = [
         let url = "/admin/category/" + record.id
         return (<Link to={url ?? ""}>{text}</Link>)
       },
+    },
+    {
+        title: 'Действие',
+        dataIndex: 'type',
+        render: (text, record, props) => {
+            let url = ""
+            return (
+                <Link 
+                onClick={(e) => {
+                    props.pathParent.push(props.parentID)
+                    props.setPathParent(props.pathParent)
+                    props.setParentID(record.id)
+                    return false;
+                }} 
+                to={url}>
+                    перейти
+                </Link>
+            )
+        },
     }
 ];
 

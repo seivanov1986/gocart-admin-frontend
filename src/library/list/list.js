@@ -1,7 +1,7 @@
 import { Breadcrumb, Button, Divider, Flex, Pagination, Popconfirm, Skeleton, Table } from "antd";
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
+import { HomeOutlined, UpCircleOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import Column from "antd/es/table/Column";
 
 const List = (props) => {
@@ -12,6 +12,8 @@ const List = (props) => {
     const [page, setPage] = useState(0)
     const [data, setData] = useState([]);
     const [selectedRows, setSelectedRows] = useState([])
+    const [parentID, setParentID] = useState(0)
+    const [pathParent, setPathParent] = useState([])
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
@@ -31,7 +33,8 @@ const List = (props) => {
         setIsLoading(true)
         props.service.list({
             ...props.extra ?? null,
-            page: page
+            page: page,
+            id_parent: parentID
         })
         .then(response => {
             for (let i = 0; i < response.data.List.length; i++) {
@@ -48,7 +51,7 @@ const List = (props) => {
 
     useEffect(() => {
         update()
-    }, [page, props.reload ?? false]);
+    }, [page, props.reload ?? false, parentID]);
 
     if (isLoading) {
         return (
@@ -112,6 +115,22 @@ const List = (props) => {
                             size='large'
                         />
                     </Popconfirm>
+
+                    {parentID > 0 &&
+                        <Button 
+                            icon={<UpCircleOutlined />} 
+                            size='large'
+                            onClick={() => {
+                                if (pathParent.length == 0) {
+                                    return
+                                }
+
+                                let last = pathParent.pop()
+                                setParentID(last)
+                            }}
+                        />
+                    }
+
                 </Flex>
 
                 <Divider />
@@ -133,7 +152,18 @@ const List = (props) => {
                     <Column
                         title={item.title}
                         dataIndex={item.dataIndex}
-                        render={item.render}
+                        render={(a, b) => {
+                            if (item.render === undefined) {
+                                return a
+                            }
+
+                            return item.render(a, b, {
+                                pathParent: pathParent,
+                                setPathParent: setPathParent,
+                                setParentID: setParentID,
+                                parentID: parentID,
+                            })
+                        }}
                     />
                 ))}
             </Table>

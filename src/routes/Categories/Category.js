@@ -28,7 +28,7 @@ const items = [
     {
         type: 'selectajax',
         title: 'Родительская категория',
-        name: 'parent_id',
+        name: 'id_parent',
         service: CategoryService
     },
     {
