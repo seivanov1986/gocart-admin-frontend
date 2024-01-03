@@ -10,7 +10,7 @@ const ChooseImage = (props) => {
         let path_image = props.form.getFieldValue("path_image")
 
         console.log(name_image, path_image)
-        let src = "http://localhost:9012/dynamic/180x120/" + path_image
+        let src = "http://localhost:9012/dynamic/180x180/" + path_image
 
         return (
             <div 

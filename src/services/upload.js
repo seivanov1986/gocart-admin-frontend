@@ -294,7 +294,15 @@ class FileManager {
 const fileManager = new(FileManager)
 
 const UploadFile = (props, setFileList, idParent) => {
-    // TODO filter extension (jpeg / jpg)
+    if (props.file.type != "image/jpeg") {
+        setFileList((prevFileList) => [...prevFileList, {
+            uid: props.file.uid,
+            name: props.file.name,
+            status: 'error',
+        }])  
+
+        return
+    }
 
     if (props.file.size > 1024 * 1024 * 100) {
         setFileList((prevFileList) => [...prevFileList, {
@@ -305,9 +313,6 @@ const UploadFile = (props, setFileList, idParent) => {
 
         return
     }
-
-    console.log(">>>>>")
-    console.log(props)
 
     props.file.idParent = idParent
     fileManager.AddFile(props.file)
