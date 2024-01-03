@@ -3,6 +3,7 @@ import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import CategoryService from '../../services/category'
+import ImageToCategoryService from '../../services/imageToCategory'
 import { useParams } from "react-router-dom"
 import { useState } from 'react';
 import Tabs from "../../library/form/tabs";
@@ -118,7 +119,10 @@ const Tab = (props) => {
     if (props.tab == 'images') {
         return (
             <>
-                <ImageList />
+                <ImageList 
+                    extra={{id_category: Number(props.params.id)}}
+                    service={ImageToCategoryService} 
+                />
             </>
         )
     }

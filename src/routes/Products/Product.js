@@ -3,6 +3,7 @@ import ItemForm from "../../library/form/form";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ProductService from '../../services/product'
+import ImageToProductService from '../../services/imageToProduct'
 import { useParams } from "react-router-dom";
 import Tabs from "../../library/form/tabs";
 import { useState } from 'react';
@@ -148,7 +149,9 @@ const Tab = (props) => {
     if (props.tab == 'images') {
         return (
             <>
-                <ImageList />
+                <ImageList 
+                    extra={{id_product: Number(props.params.id)}}
+                    service={ImageToProductService} />
             </>
         )
     }
