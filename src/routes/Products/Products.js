@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ProductService from '../../services/product'
 import List from "../../library/list/list";
+import ProductFilter from "./Filter";
 
 const breadcumbItems = [
     {
@@ -35,6 +36,7 @@ const Products = () => {
             columns={columns} 
             breadcumbItems={breadcumbItems}
             createUrl="product"
+            filter={<ProductFilter />}
         />
     )
 }

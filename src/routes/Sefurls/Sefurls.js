@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import SefurlService from '../../services/sefurl'
 import List from "../../library/list/list";
+import SefurlFilter from "./Filter";
 
 const breadcumbItems = [
     {
@@ -51,6 +52,7 @@ const Sefurls = () => {
             service={SefurlService}
             columns={columns} 
             breadcumbItems={breadcumbItems}
+            filter={<SefurlFilter />}
         />
     )
 }

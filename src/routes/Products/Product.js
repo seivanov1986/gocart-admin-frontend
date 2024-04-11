@@ -146,12 +146,21 @@ const Tab = (props) => {
         )
     }
 
+    const getQuery = (id1, id2) => {
+        return {
+            image_id: id1,
+            product_id: id2,
+        };
+    }
+
     if (props.tab == 'images') {
         return (
             <>
                 <ImageList 
                     extra={{id_product: Number(props.params.id)}}
-                    service={ImageToProductService} />
+                    service={ImageToProductService} 
+                    getQuery={getQuery}
+                />
             </>
         )
     }

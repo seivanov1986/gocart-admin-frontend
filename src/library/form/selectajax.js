@@ -109,6 +109,7 @@ const Parent = (props) => {
     return (
         <>
             <DebounceSelect
+                mode={props.mode ?? null}
                 service={props.service ?? null}
                 showSearch
                 allowClear                

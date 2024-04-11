@@ -122,7 +122,7 @@ const CkeditorRender = (item) => {
             editor={ClassicEditor}
             data={item.form.getFieldValue(item.name ?? "") ?? ""}
             config={{
-                toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'insertTable',
+                toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'fontColor', 'fontBackgroundColor', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'insertTable',
                     'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', '|', 'SourceEditing'],
                 htmlSupport: {
                     allow: [
@@ -307,6 +307,7 @@ const ItemForm = (props) => {
         id: Number(props.params.id)
       })
       .then(response => {
+          console.log(response)
           if (response.status === 200) {
               notification.success({
                   message: 'success',
@@ -321,6 +322,7 @@ const ItemForm = (props) => {
           }
       })
       .catch(e => {
+          console.log(e)
           notification.error({
               message: 'Template error',
               duration: 10,

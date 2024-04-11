@@ -6,7 +6,9 @@ import ImageModal from '../../modals/Image';
 import { HOST } from '../../const'
 
 const CustomImage = (props) => {
-    let src = HOST + "/dynamic/180x180" + props.ImagePath;
+    console.log(props)
+
+    let src = HOST + "/dynamic/180x180" + props.item.ImagePath;
 
     return (
         <>
@@ -14,9 +16,26 @@ const CustomImage = (props) => {
             style={{
                 width: '180px',
                 height: '180px',
-                borderRadius: '5px'
+                borderRadius: '5px',
+                position: 'relative'
             }}
         >
+            <div style={{
+                display: 'block',
+                position: 'absolute',
+                right: 0,
+                width: 20,
+                height: 20,
+            }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    props.props.service.delete(props.deleteQuery)
+                    .then(response => {
+                    })
+                    .catch(e => {
+                    });
+                }}
+            >X</div>
             <img
                 style={{
                     width: '180px',
@@ -123,7 +142,15 @@ const ImageList = (props) => {
             }}
         >
             {data.map((item, i) => {
-                return <CustomImage {...item} />
+                let query = props.getQuery(item.ImageID, props.extra.id_category || props.extra.id_product)
+                console.log(query)
+                console.log(props)
+
+                return <CustomImage 
+                    item={item} 
+                    props={props}
+                    deleteQuery={query}
+                />
             })}
         </div>
         <div

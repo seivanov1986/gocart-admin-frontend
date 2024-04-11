@@ -17,9 +17,23 @@ const ChooseImage = (props) => {
 
         return (
             <div 
-                style={{width: '180px', height: '180px'}} 
+                style={{width: '180px', height: '180px', position: 'relative'}} 
                 onClick={() => {props.setImageOpen(true)}}
             >
+                <div style={{
+                    display: 'block',
+                    position: 'absolute',
+                    right: 0,
+                    width: 20,
+                    height: 20,
+                }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        props.form.setFieldsValue({
+                            ['id_image']: null
+                        })
+                    }}
+                >X</div>
                 <img 
                     src={src}
                     style={{width: '180px', height: '180px'}}

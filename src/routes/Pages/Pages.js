@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { HomeOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import PageService from '../../services/page'
 import List from "../../library/list/list";
+import PageFilter from "./Filter";
 
 const breadcumbItems = [
     {
@@ -49,6 +50,7 @@ const Pages = () => {
             columns={columns} 
             breadcumbItems={breadcumbItems}
             createUrl="page"
+            filter={<PageFilter />}
         />
     )
 }

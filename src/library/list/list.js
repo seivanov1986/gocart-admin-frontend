@@ -1,8 +1,10 @@
-import { Breadcrumb, Button, Divider, Flex, Pagination, Popconfirm, Skeleton, Table } from "antd";
-import { useEffect, useState } from 'react';
+import { Breadcrumb, Button, Collapse, Divider, Flex, Form, Input, Pagination, Popconfirm, Select, Skeleton, Space, Table, Tooltip, Typography } from "antd";
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from "react-router-dom";
 import { HomeOutlined, UpCircleOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import Column from "antd/es/table/Column";
+import { Option } from "antd/es/mentions";
+import { cloneElement } from 'react';
 
 const List = (props) => {
     const buttonExists = props.buttonExists ?? true
@@ -14,6 +16,14 @@ const List = (props) => {
     const [selectedRows, setSelectedRows] = useState([])
     const [parentID, setParentID] = useState(0)
     const [pathParent, setPathParent] = useState([])
+    const [filter, setFilter] = useState({})
+
+    const clonedElement = useMemo(() => {
+        if (!props.filter) return null
+        return cloneElement(
+            props.filter, {setFilter}
+        )
+    }, [props.filter, setFilter]);
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
@@ -34,7 +44,8 @@ const List = (props) => {
         props.service.list({
             ...props.extra ?? null,
             page: page,
-            id_parent: parentID
+            id_parent: parentID,
+            filter: filter,
         })
         .then(response => {
             for (let i = 0; i < response.data.List.length; i++) {
@@ -51,7 +62,7 @@ const List = (props) => {
 
     useEffect(() => {
         update()
-    }, [page, props.reload ?? false, parentID]);
+    }, [page, props.reload ?? false, parentID, filter]);
 
     if (isLoading) {
         return (
@@ -137,6 +148,8 @@ const List = (props) => {
             </>
             }
 
+            {clonedElement}
+
             <Table 
                 rowSelection={{
                     type: 'multiple',
@@ -183,6 +196,7 @@ const List = (props) => {
                     setPage(page-1)
                 }}
                 current={page+1}
+                showSizeChanger={false}
             />
             </div>
         </>

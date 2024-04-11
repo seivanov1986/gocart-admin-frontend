@@ -116,12 +116,20 @@ const Tab = (props) => {
         )
     }
 
+    const getQuery = (id1, id2) => {
+        return {
+            image_id: id1,
+            category_id: id2,
+        };
+    }
+
     if (props.tab == 'images') {
         return (
             <>
                 <ImageList 
                     extra={{id_category: Number(props.params.id)}}
                     service={ImageToCategoryService} 
+                    getQuery={getQuery}
                 />
             </>
         )
