@@ -10,7 +10,7 @@ import ItemForm from "../../../library/form/form";
 const columns = [
     {
       title: 'Аттрибут',
-      dataIndex: 'Name',
+      dataIndex: 'name',
       render: (text, record) => {
         let url = "/admin/product/" + record.Id
         return (<Link to={url ?? ""}>{text}</Link>)
@@ -18,7 +18,7 @@ const columns = [
     },
     {
       title: 'Значение',
-      dataIndex: 'Value'
+      dataIndex: 'value'
     },
 ];
 
@@ -96,6 +96,11 @@ const AttributesTab = (props) => {
               createUrl="product"
               addFunc={addFunc}
               reload={reload}
+              checkBoxID={'id_attribute'}
+              DeleteExtra={(a, b) => ({
+                ...a,
+                attribute_ids: b
+              })}
           />
           <AddModal 
             isOpen={isOpen}

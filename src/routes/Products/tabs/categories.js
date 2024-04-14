@@ -9,8 +9,12 @@ import ItemForm from "../../../library/form/form";
 
 const columns = [
     {
-      title: 'Название продукта',
+      title: 'Название категории',
       dataIndex: 'name_category',
+    },
+    {
+        title: 'Главная категория',
+        dataIndex: 'main_category',
     },
 ];
 
@@ -88,6 +92,11 @@ const CategoriesTab = (props) => {
                 createUrl="product"
                 addFunc={addFunc}
                 reload={reload}
+                checkBoxID={'id_category'}
+                DeleteExtra={(a, b) => ({
+                    ...a,
+                    category_ids: b
+                })}
             />
             <AddModal 
                 isOpen={isOpen} 

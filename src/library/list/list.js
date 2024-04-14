@@ -29,13 +29,13 @@ const List = (props) => {
         onChange: (selectedRowKeys, selectedRows) => {
             let rows = [];
             for (let i = 0; i < selectedRows.length; i++) {
-                rows.push(selectedRows[i].id)
+                rows.push(selectedRows[i][props.checkBoxID ?? 'id'])
             }
 
             setSelectedRows(rows)
         },
         getCheckboxProps: (record) => ({
-          id: record.id
+          id: record[props.checkBoxID ?? 'id']
         }),
     }; 
 
@@ -105,7 +105,8 @@ const List = (props) => {
                         title="Delete the task"
                         description="Are you sure to delete this task?"
                         onConfirm={(e) => {
-                            props.service.delete({
+                            props.service.delete(props.DeleteExtra ? props.DeleteExtra(props.extra ?? null, selectedRows) : {
+                                ...props.extra ?? null,
                                 ids: selectedRows
                             })
                             .then(response => {
