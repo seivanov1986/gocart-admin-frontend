@@ -146,11 +146,19 @@ const CkeditorRender = (item) => {
 }
 
 const CheckboxRender = (item) => {
+  const setValue = (value) => {
+    console.log(value)
+    item.form.setFieldsValue({
+      [item.name]: value ? 1 : 0
+    })
+  }
+
   return (
     <>
       <Form.Item
         label={item.title ?? ""}
         name={item.name ?? ""}
+        valuePropName='checked'
       >
           <Checkbox />
       </Form.Item>
@@ -180,13 +188,20 @@ const SelectAjaxRender = (item) => {
     })
   }
 
+  const value = item.form.getFieldValue("id_parent_name")
+  console.log(value)
+
   return (
     <>
       <Form.Item
             name={item.name ?? ""}
             label={item.title ?? ""}
         >
-        <Parent setValue={setValue} service={item.service ?? null} />
+        <Parent 
+          setValue={setValue} 
+          service={item.service ?? null}
+          currentValue={value}
+        />
       </Form.Item>
     </>
   )

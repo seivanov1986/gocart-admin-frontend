@@ -175,6 +175,7 @@ const List = (props) => {
                                 pathParent: pathParent,
                                 setPathParent: setPathParent,
                                 setParentID: setParentID,
+                                setPage: setPage,
                                 parentID: parentID,
                             })
                         }}

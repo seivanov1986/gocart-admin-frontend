@@ -3,8 +3,9 @@ import CategoryDataService from '../../services/category';
 import { useMemo, useRef } from 'react';
 import debounce from 'lodash/debounce';
 import { Select, Spin } from 'antd';
+import { useEffect } from 'react';
 
-function DebounceSelect({ fetchOptions, debounceTimeout = 800, ...props }) {
+function DebounceSelect({ fetchOptions, debounceTimeout = 800, currentValue, ...props }) {
     const [fetching, setFetching] = useState(false);
     const [options, setOptions] = useState([]);
     const fetchRef = useRef(0);
@@ -26,6 +27,17 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, ...props }) {
       };
       return debounce(loadOptions, debounceTimeout);
     }, [fetchOptions, debounceTimeout]);
+
+    useEffect(() => {
+      if (options.label) {
+        return
+      }
+
+      setOptions([{
+        label: currentValue,
+        value: props.value
+      }]);
+    }, [currentValue]);
 
     return (
       <Select
@@ -105,6 +117,8 @@ const Parent = (props) => {
     const [value, setValue] = useState([]);
 
     // service = props.service
+
+    console.log(props)
 
     return (
         <>

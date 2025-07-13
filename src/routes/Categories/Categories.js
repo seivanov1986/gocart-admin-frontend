@@ -37,6 +37,7 @@ const columns = [
                     props.pathParent.push(props.parentID)
                     props.setPathParent(props.pathParent)
                     props.setParentID(record.id)
+                    props.setPage(0)
                     return false;
                 }} 
                 to={url}>
