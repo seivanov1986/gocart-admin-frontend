@@ -64,15 +64,6 @@ const List = (props) => {
         update()
     }, [page, props.reload ?? false, parentID, filter]);
 
-    if (isLoading) {
-        return (
-            <>
-                <Breadcrumb separator="" items={[]} />
-                <Skeleton active />
-            </>
-        )    
-    }
-
     return (
         <>
             {props.breadcumbItems.length > 0 &&
@@ -151,37 +142,43 @@ const List = (props) => {
 
             {clonedElement}
 
-            <Table 
-                rowSelection={{
-                    type: 'multiple',
-                    ...rowSelection,
-                }}
-                dataSource={data}
-                style={{overflow: 'scroll'}}
-                bordered={true}
-                pagination={false}
-                //columns={props.columns}
-            >
-                {props.columns.map((item, index) => (
-                    <Column
-                        title={item.title}
-                        dataIndex={item.dataIndex}
-                        render={(a, b) => {
-                            if (item.render === undefined) {
-                                return a
-                            }
+            {isLoading ? (
+                <Skeleton active paragraph={{ rows: 8 }} />
+            ) : (
+                <>
+                <Table 
+                    rowSelection={{
+                        type: 'multiple',
+                        ...rowSelection,
+                    }}
+                    dataSource={data}
+                    style={{overflow: 'scroll'}}
+                    bordered={true}
+                    pagination={false}
+                    //columns={props.columns}
+                >
+                    {props.columns.map((item, index) => (
+                        <Column
+                            title={item.title}
+                            dataIndex={item.dataIndex}
+                            render={(a, b) => {
+                                if (item.render === undefined) {
+                                    return a
+                                }
 
-                            return item.render(a, b, {
-                                pathParent: pathParent,
-                                setPathParent: setPathParent,
-                                setParentID: setParentID,
-                                setPage: setPage,
-                                parentID: parentID,
-                            })
-                        }}
-                    />
-                ))}
-            </Table>
+                                return item.render(a, b, {
+                                    pathParent: pathParent,
+                                    setPathParent: setPathParent,
+                                    setParentID: setParentID,
+                                    setPage: setPage,
+                                    parentID: parentID,
+                                })
+                            }}
+                        />
+                    ))}
+                </Table>
+                </>
+            )}
             <div
                 style={{
                     textAlign: 'right',

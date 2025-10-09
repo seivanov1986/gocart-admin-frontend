@@ -15,6 +15,17 @@ import './image.css'
 import { HOST } from '../const'
 import { getToken } from '../authorization/auth'
 import FileListManager from '../library/file_list'
+import { create } from 'zustand';
+
+// Zustand store
+const useImageStore = create((set) => ({
+    idParent: 0,
+    pathParent: [],
+    page: 0,
+    setIdParent: (id) => set({ idParent: id }),
+    setPathParent: (path) => set({ pathParent: path }),
+    setPage: (page) => set({ page }),
+}));
 
 const CustomImage = (props) => {
     let [ID, setID] = useState()
@@ -69,7 +80,8 @@ const CustomImage = (props) => {
                         <div
                             style={{
                                 position: 'absolute',
-                                top: '0px'
+                                top: '5px',
+                                left: '10px'
                             }}
                         >{name}</div>
                     </div>
@@ -192,12 +204,12 @@ const ImageModal = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [items, setItems] = useState([])
     const [total, setTotal] = useState(0)
-    const [idParent, setIdParent] = useState(0)
-    const [pathParent, setPathParent] = useState([])
-    const [page, setPage] = useState(0)
     const [fileList, setFileList] = useState([])
 
     FileListManager.set(fileList, setFileList)
+
+    // Zustand state
+    const { idParent, pathParent, page, setIdParent, setPathParent, setPage } = useImageStore();
 
     console.log(fileList)
 
@@ -271,6 +283,7 @@ const ImageModal = (props) => {
 
                         let last = pathParent.pop()
                         setIdParent(last)
+                        setPage(0)
                         console.log("LAST", last)
                         console.log(pathParent)
                     }}
