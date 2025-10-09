@@ -7,6 +7,9 @@ import Sider from 'antd/es/layout/Sider';
 import { useEffect } from 'react';
 import pingService from '../services/ping';
 import {cleanToken} from '../authorization/auth'
+import { Dropdown, Space } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+
 
 import {
     MenuFoldOutlined,
@@ -62,7 +65,12 @@ const Logo = (collapsed) => {
             />
             <span className="logotext"
                 style={{
-                    display: collapsed.collapsed === false ? 'inline' : 'none'
+                    maxWidth: collapsed.collapsed === false ? '100px' : '0px',
+                    overflow: 'hidden',
+                    display: 'inline-block',
+                    whiteSpace: 'nowrap',
+                    transition: 'max-width 0.3s ease, opacity 0.3s ease',
+                    opacity: collapsed.collapsed === false ? 1 : 0,
                 }}
             >GoCart</span>
         </Link>
@@ -115,6 +123,7 @@ const AppLayout = () => {
                         onClick={() => setCollapsed(!collapsed)}
                         style={{ fontSize: '16px' }}
                     />
+
                     <a class="exitlink" href="/admin/logout">Выход</a>
                 </Header>
                 <Content>
@@ -122,9 +131,6 @@ const AppLayout = () => {
                         <Outlet/>
                     </div>
                 </Content>
-                <Footer className="app-layout-footer">
-                    Version 0.1.1
-                </Footer>
             </Layout>
         </Layout>
     )

@@ -86,3 +86,15 @@ footer {
     padding-right: 24px;
     min-height: 360px;
 }
+
+.app-split {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.gutter {
+  background-color: #1f1f1f;
+  cursor: col-resize;
+  width: 5px;
+}

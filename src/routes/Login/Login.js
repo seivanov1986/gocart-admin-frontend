@@ -8,7 +8,7 @@ import 'antd'
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import './Login.css'
+import styles from './Login.css'
 
 async function loginUser(credentials) {
   try {
@@ -55,64 +55,64 @@ const Login = () => {
 
   return (
     <>
-      <div id="form">
-      <Form
-      name="normal_login"
-      className="login-form"
-      initialValues={{
-        remember: true,
-      }}
-    >
-      <Form.Item
-        name="username"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your Username!',
-          },
-        ]}
-      >
-      <Input 
-        prefix={<UserOutlined className="site-form-item-icon" />} 
-        placeholder="Username" 
-        onChange={(e) => {setLogin(e.target.value)}}
-      />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your Password!',
-          },
-        ]}
-      >
-        <Input.Password
-          prefix={<LockOutlined className="site-form-item-icon" />}
-          type="password"
-          placeholder="Password"
-          iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-          onChange={(e) => {setPassword(e.target.value)}}
-        />
-      </Form.Item>
-      <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-      </Form.Item>
-
-      <Form.Item>
-        <Button 
-          type="primary" 
-          htmlType="submit" 
-          className="login-form-button"
-          onClick={handleSubmit}
+      <div id="form" className={styles.container}>
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{
+            remember: true,
+          }}
         >
-          Log in
-        </Button>
-      </Form.Item>
-    </Form>       
-    </div> 
+          <Form.Item
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Username!',
+              },
+            ]}
+          >
+          <Input 
+            prefix={<UserOutlined className="site-form-item-icon" />} 
+            placeholder="Username" 
+            onChange={(e) => {setLogin(e.target.value)}}
+          />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Password!',
+              },
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+              iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+              onChange={(e) => {setPassword(e.target.value)}}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item>
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              className="login-form-button"
+              onClick={handleSubmit}
+            >
+              Log in
+            </Button>
+          </Form.Item>
+        </Form>       
+      </div> 
     </>
   )
 }

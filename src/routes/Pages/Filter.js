@@ -5,6 +5,61 @@ import { HomeOutlined, UpCircleOutlined, PlusCircleOutlined, DeleteOutlined } fr
 import Column from "antd/es/table/Column";
 import { Option } from "antd/es/mentions";
 
+const accordionItem = (form, onFinish) => {
+  return (
+    <>
+      <Form
+        name="complex-form"
+        form={form}
+        onFinish={onFinish}
+        labelCol={{ span: 4 }}
+        style={{
+          maxWidth: 1000,
+          paddingRight: '20px',
+          'padding-top': 20,
+        }}
+      >
+        <Form.Item label="Название страницы">
+          <Form.Item
+            name="name" 
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              padding: 0,
+              margin: 0
+            }}>
+              <Input/>
+          </Form.Item>
+        </Form.Item>
+        <Form.Item label="Тип страницы">   
+          <Form.Item
+            name="type" 
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              padding: 0,
+              margin: 0
+            }}
+          >
+            <Select 
+              mode="multiple"
+            >
+              <Option value="1">Статья</Option>
+              <Option value="0">Страница</Option>
+              <Option value="2">Новость</Option>
+            </Select>
+          </Form.Item>
+        </Form.Item>
+        <Form.Item label=" " colon={false}>
+          <Button type="primary" htmlType="submit">
+            Применить условия
+          </Button>
+        </Form.Item>
+      </Form>
+    </>
+  )
+}
+
 const PageFilter = (props) => {
     const [form] = Form.useForm();
 
@@ -30,70 +85,11 @@ const PageFilter = (props) => {
     return (
         <>
             <Collapse accordion items={[
-  {
-    key: '1',
-    label: 'Фильтр',
-    children: <Form
-    name="complex-form"
-    form={form}
-    onFinish={onFinish}
-    labelCol={{
-      span: 8,
-    }}
-    wrapperCol={{
-      //span: 16,
-    }}
-    style={{
-      maxWidth: 600,
-    }}
-  >
-<Form.Item label="Название страницы"
-
- style={{
-    'padding-top': 20,
- }}
->
-      <Space>
-        <Form.Item
-          name="name"
-          noStyle
-        >
-          <Input
-            style={{
-              width: 160,
-            }}
-            
-          />
-        </Form.Item>
-      </Space>
-    </Form.Item>
-    <Form.Item label="Тип страницы">
-      
-        <Form.Item
-          name="type"
-          noStyle
-        >
-          <Select 
-            mode="multiple"
-            style={{
-                width: 160,
-            }}
-          >
-            <Option value="1">Статья</Option>
-            <Option value="0">Страница</Option>
-            <Option value="2">Новость</Option>
-          </Select>
-        </Form.Item>
-      
-    </Form.Item>
-    
-    <Form.Item label=" " colon={false}>
-      <Button type="primary" htmlType="submit">
-        Commit
-      </Button>
-    </Form.Item>
-  </Form>,
-  },
+            {
+              key: '1',
+              label: 'Фильтр',
+              children: accordionItem(form, onFinish),
+            },
 ]} />
 
 

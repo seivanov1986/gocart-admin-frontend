@@ -20,7 +20,7 @@ const items = [
     {
         type: 'checkbox',
         title: 'Активная',
-        name: 'active'
+        name: 'disabled',
     },
     {
         type: 'input',

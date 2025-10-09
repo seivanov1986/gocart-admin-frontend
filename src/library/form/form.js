@@ -146,25 +146,24 @@ const CkeditorRender = (item) => {
 }
 
 const CheckboxRender = (item) => {
-  const setValue = (value) => {
-    console.log(value)
-    item.form.setFieldsValue({
-      [item.name]: value ? 1 : 0
-    })
-  }
+  const value = item.form.getFieldValue(item.name);
+
+  console.log(item);
+  console.log(value);
 
   return (
     <>
       <Form.Item
         label={item.title ?? ""}
         name={item.name ?? ""}
-        valuePropName='checked'
+        valuePropName="checked"
+        initialValue={value ?? false}
       >
-          <Checkbox />
+        <Checkbox />
       </Form.Item>
     </>
-  )
-}
+  );
+};
 
 const DigitInputRender = (item) => {
   return (
@@ -292,7 +291,18 @@ const ItemForm = (props) => {
       .then(response => {
         if (response.status === 200) {
           console.log(response.data.Row)
-          form.setFieldsValue(response.data.Row);
+
+          console.log(">>> RAW disabled:", response.data.Row.disabled)
+          console.log(">>> SET disabled:", !response.data.Row.disabled)
+
+          const transformedRow = {
+            ...response.data.Row,
+            disabled: !response.data.Row.disabled
+          };
+
+          console.log(transformedRow);
+
+          form.setFieldsValue(transformedRow);
           setIsLoading(false)
         }
       })
@@ -314,6 +324,10 @@ const ItemForm = (props) => {
         if (property) {
             request[property] = values[property]
         }
+    }
+
+    if ('disabled' in request) {
+      request.disabled = !request.disabled;
     }
 
     if (props.params.id) {
@@ -401,12 +415,15 @@ const ItemForm = (props) => {
             <>
             <Divider />
 
-            <Form.Item>
+            <Form.Item
+              label={<span style={{ visibility: 'hidden' }}>button1</span>}
+              colon={false}
+            >
                 <Button 
                     type="primary" htmlType="submit"
                     //loading={inQuery}
                 >
-                Сохранить
+                Сохранить объект
                 </Button>
             </Form.Item>
             </>

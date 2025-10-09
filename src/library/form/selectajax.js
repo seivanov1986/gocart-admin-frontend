@@ -1,144 +1,91 @@
-import { useState } from 'react';
-import CategoryDataService from '../../services/category';
-import { useMemo, useRef } from 'react';
-import debounce from 'lodash/debounce';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Select, Spin } from 'antd';
-import { useEffect } from 'react';
+import debounce from 'lodash/debounce';
 
-function DebounceSelect({ fetchOptions, debounceTimeout = 800, currentValue, ...props }) {
-    const [fetching, setFetching] = useState(false);
-    const [options, setOptions] = useState([]);
-    const fetchRef = useRef(0);
+function DebounceSelect({ fetchOptions, debounceTimeout = 800, value, setValue, ...props }) {
+  const [fetching, setFetching] = useState(false);
+  const [options, setOptions] = useState([]);
+  const fetchRef = useRef(0);
 
-    const debounceFetcher = useMemo(() => {
-      const loadOptions = (value) => {
-        fetchRef.current += 1;
-        const fetchId = fetchRef.current;
-        setOptions([]);
-        setFetching(true);
-        fetchOptions(value).then((newOptions) => {
-          if (fetchId !== fetchRef.current) {
-            // for fetch callback order
-            return;
-          }
-          setOptions(newOptions);
-          setFetching(false);
-        });
-      };
-      return debounce(loadOptions, debounceTimeout);
-    }, [fetchOptions, debounceTimeout]);
+  // дебаунс для поиска
+  const debounceFetcher = useMemo(() => {
+    const loadOptions = (inputValue) => {
+      fetchRef.current += 1;
+      const fetchId = fetchRef.current;
+      setOptions([]);
+      setFetching(true);
+      fetchOptions(inputValue).then(newOptions => {
+        if (fetchId !== fetchRef.current) return;
+        setOptions(newOptions);
+        setFetching(false);
+      });
+    };
+    return debounce(loadOptions, debounceTimeout);
+  }, [fetchOptions, debounceTimeout]);
 
-    useEffect(() => {
-      if (options.label) {
-        return
-      }
+  // обновляем options при value, чтобы отобразить label
+  useEffect(() => {
+    if (!value) return;
+    setOptions(value.map(v => ({ label: v.label, value: v.value })));
+  }, [value]);
 
-      setOptions([{
-        label: currentValue,
-        value: props.value
-      }]);
-    }, [currentValue]);
-
-    return (
-      <Select
-        filterOption={false}
-        onSearch={debounceFetcher}
-        notFoundContent={fetching ? <Spin size="small" /> : null}
-        {...props}
-        options={options}
-        onChange={(e) => {
-          if (props.setValue) {
-            props.setValue(e)
-          }
-        }}
-        onDropdownVisibleChange={(e) => {
-            if (e === false) {
-                //setLoading(false)
-                return
-            }
-            //setLoading(true)
-            props.service.selectList({})
-            .then(response => {
-              setOptions(response.data.List.map((category) => ({
-                label: category.name,
-                value: category.id
-              })))
+  return (
+    <Select
+      mode={props.mode}
+      showSearch
+      allowClear
+      filterOption={false}
+      notFoundContent={fetching ? <Spin size="small" /> : null}
+      {...props}
+      value={value}
+      options={options}
+      onSearch={debounceFetcher}
+      onChange={(val, optionObjects) => {
+        // возвращаем массив объектов {value, label}
+        setValue(optionObjects);
+      }}
+      onDropdownVisibleChange={(open) => {
+        if (!open) return;
+        if (props.service) {
+          props.service.selectList({})
+            .then(res => {
+              setOptions(res.data.List.map(cat => ({
+                value: cat.id,
+                label: cat.name
+              })));
             })
-            .catch(e => {
-                
-            })
-            .finally(() => {
-            });
-        }}
-      />
-    );
+            .catch(() => {});
+        }
+      }}
+    />
+  );
 }
 
-async function fetchUserList(username) {
-  return CategoryDataService.selectList({
-    query: username
-  })
-  .then(response => {
-    return response.data.List.map((category) => ({
-      label: category.name,
-      value: category.id
-    }))
-  })
-  .catch(e => {
-      
-  })
-  .finally(() => {
-  });
-}
-
+// создаём fetch для DebounceSelect
 function getFetch(service) {
   return async function fetchUserList(username) {
-    return service.selectList({
-      query: username
-    })
-    .then(response => {
-      return response.data.List.map((category) => ({
-        label: category.name,
-        value: category.id
-      }))
-    })
-    .catch(e => {
-        
-    })
-    .finally(() => {
-    });
+    return service.selectList({ query: username })
+      .then(res => res.data.List.map(cat => ({ value: cat.id, label: cat.name })))
+      .catch(() => []);
   }
 }
 
-const Parent = (props) => {
-    const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState([])
-    const [searchText, setSearchText] = useState("")
-    const [value, setValue] = useState([]);
-
-    // service = props.service
-
-    console.log(props)
-
-    return (
-        <>
-            <DebounceSelect
-                mode={props.mode ?? null}
-                service={props.service ?? null}
-                showSearch
-                allowClear                
-                placeholder="Select users"
-                fetchOptions={getFetch(props.service ?? null)}
-                onChange={(newValue) => {
-                    setValue(newValue);
-                }}
-                style={{
-                    width: '100%',
-                }}
-                {...props}
-            />
-        </>
-    )
-}
+// компонент Parent
+const Parent = ({ service, mode, setValue, value, ...props }) => {
+  return (
+    <DebounceSelect
+      mode={mode ?? null}
+      service={service ?? null}
+      fetchOptions={getFetch(service)}
+      value={value}
+      setValue={setValue}
+      showSearch
+      allowClear
+      placeholder="Выберите категорию"
+      style={{ width: '100%' }}
+      {...props}
+    />
+  );
+};
 
 export default Parent;
