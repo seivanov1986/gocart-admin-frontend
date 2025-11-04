@@ -25,8 +25,8 @@
     "zustand": "^5.0.8"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "REACT_APP_VERSION=1.0.0 REACT_APP_GIT_SHA=$(git rev-parse HEAD) react-scripts start",
+    "build": "REACT_APP_VERSION=1.0.0 REACT_APP_GIT_SHA=$(git rev-parse HEAD) react-scripts build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
