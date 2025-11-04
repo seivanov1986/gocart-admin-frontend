@@ -5,6 +5,10 @@ class ProductService {
         return http().post("/admin/product/create", data);
     }
 
+    copy(data) {
+        return http().post("/admin/product/copy", data);
+    }
+
     read(data) {
         return http().post("/admin/product/read", data);
     }
