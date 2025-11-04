@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { getToken, setToken } from '../../authorization/auth'
 import axios from 'axios'
 import { HOST } from '../../const'
-import authService from '../../services/auth';
+import authService from '../../services/auth.tsx';
 import 'antd'
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -39,9 +39,7 @@ const Login = () => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    authService.login(JSON.stringify({
-      login, password
-    }))
+    authService.login({login: login, password: password})
     .then(response => {
       setToken({
         token: response.data.token
