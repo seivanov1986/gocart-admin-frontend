@@ -49,10 +49,14 @@ const items = [
 }));
 
 const Logo = (collapsed) => {
+    const logoSrc = process.env.NODE_ENV === "development"
+        ? "/static/AdminLTELogo.png"
+        : "/admin/static/AdminLTELogo.png";
+
     return (
         <Link to="/admin">
             <img 
-                src="/admin/static/AdminLTELogo.png" 
+                src={logoSrc} 
                 style={{
                     float: 'left',
                     lineHeight: .8,
